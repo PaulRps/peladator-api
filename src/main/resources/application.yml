@@ -1,0 +1,15 @@
+---
+spring:
+#  h2:
+#    console:
+#      enabled: true
+  datasource:
+  #?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/peladator
+    username: peladator
+    password: peladator
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true

@@ -1,0 +1,75 @@
+package com.paulrps.peladator.services.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.repositories.PlayerResository;
+import com.paulrps.peladator.services.PlayerService;
+
+@Service
+public class PlayerServiceImpl implements PlayerService {
+
+	@Autowired
+	PlayerResository playerResository;
+	
+	@Override
+	public Player addPlayer(Player player) {
+		
+		if (!Optional.ofNullable(player).isPresent()) {
+			throw new RuntimeException("");
+		}
+		
+		if (Optional.ofNullable(player.getId()).isPresent()) {
+			
+			Optional<Player> findById = playerResository.findById(player.getId());
+
+			if (findById.isPresent()) {
+				return player;
+			}
+		}
+		
+		return playerResository.save(player);	
+	}	
+	
+	@Override
+	public boolean deletePlayer(Long id) {
+		
+		if (!Optional.ofNullable(id).isPresent()) {
+			throw new RuntimeException("");
+		}
+		
+		Optional<Player> player = playerResository.findById(id);
+		
+		if (player.isPresent()) {
+			
+			playerResository.delete(player.get());
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public List<Player> getAllPlayers() {
+		
+		return playerResository.findAll();
+	}
+
+	
+
+	@Override
+	public Player getOnePlayer(Long id) {
+		
+		if (!Optional.ofNullable(id).isPresent()) {
+			throw new RuntimeException("");
+		}
+		
+		return playerResository.findById(id).orElse(null);
+	}
+	
+}
