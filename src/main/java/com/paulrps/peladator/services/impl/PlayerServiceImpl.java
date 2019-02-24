@@ -1,5 +1,6 @@
 package com.paulrps.peladator.services.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
 import com.paulrps.peladator.services.PlayerService;
 
@@ -70,6 +72,13 @@ public class PlayerServiceImpl implements PlayerService {
 		}
 		
 		return playerResository.findById(id).orElse(null);
+	}
+	
+	@Override
+	public List<PlayerPositionEnum> getPlayerPositions() {
+		PlayerPositionEnum.class.getEnumConstants();
+		return Arrays.asList(PlayerPositionEnum.values());
+		
 	}
 	
 }

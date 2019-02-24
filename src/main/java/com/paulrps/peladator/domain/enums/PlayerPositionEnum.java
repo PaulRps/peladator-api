@@ -1,10 +1,13 @@
 package com.paulrps.peladator.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PlayerPositionEnum {
 
 	GK(1l, "Goleiro"),
