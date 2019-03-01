@@ -3,6 +3,7 @@ package com.paulrps.peladator.services;
 import java.util.List;
 
 import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 
 public interface PlayerService {
@@ -16,4 +17,6 @@ public interface PlayerService {
 	public Player getOnePlayer(Long id);
 	
 	public List<PlayerPositionEnum> getPlayerPositions();
+
+	public List<PlayerLevelEnum> getPlayerLevels();
 }

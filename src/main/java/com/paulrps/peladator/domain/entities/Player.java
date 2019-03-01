@@ -1,7 +1,5 @@
 package com.paulrps.peladator.domain.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,10 +15,8 @@ import lombok.Data;
 @AllArgsConstructor
 @Entity
 @Table(name="tb_player")
-public class Player implements Serializable {
+public class Player {
 	
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "pk_player")
@@ -33,11 +29,7 @@ public class Player implements Serializable {
 	private Integer age;
 	
 	@NotNull
-	private Integer skillLevel;
-	
-//	@OneToMany(fetch = FetchType.LAZY)
-//	@JoinColumn(name="fk_position")
-//	private List<PlayerPosition> playerPositions;
+	private String skillLevel;
 	
 	public Player() {}
 	
