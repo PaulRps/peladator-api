@@ -25,8 +25,18 @@ public class PeladatorApi {
 //			playerService.addPlayer ( new Player(4L,"Roberto", 1, 1) );
 //			playerService.addPlayer ( new Player(5L,"Marcos", 1, 1) );
 //			playerService.addPlayer ( new Player(6L,"Ronaldo", 1, 5) );
-			playerService.addPlayer ( new Player(7L,"Messi", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(8L,"Romário", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(1L,"Messi", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(2L,"Ronaldo", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(3L,"C. Ronaldo", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(4L,"Neymar", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(5L,"Bale", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(6L,"Zico", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(7L,"Pele", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(8L,"Garrincha", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(9L,"Pepe", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(10L,"Tostão", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(11L,"Bebeto", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.addPlayer ( new Player(12L,"Romário", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
 		};
 	}
 
