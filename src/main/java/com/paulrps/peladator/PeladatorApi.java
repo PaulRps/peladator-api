@@ -3,6 +3,8 @@ package com.paulrps.peladator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
 import com.paulrps.peladator.domain.entities.Player;
@@ -10,7 +12,12 @@ import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.services.PlayerService;
 
 @SpringBootApplication
-public class PeladatorApi {
+public class PeladatorApi extends SpringBootServletInitializer {
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(PeladatorApi.class);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(PeladatorApi.class, args);
