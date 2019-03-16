@@ -9,6 +9,7 @@ import com.paulrps.peladator.domain.dto.PlayerAddDataViewDto;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.services.PlayerService;
 
+@CrossOrigin(origins = "https://peladator.netlify.com", maxAge = 3600)
 @RestController
 @RequestMapping("api/player")
 public class PlayerController {
