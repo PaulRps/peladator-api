@@ -20,7 +20,7 @@ public class PlayerController {
 	Player getPlayer(@PathVariable(value="id") Long id) {
 		
 		return playerService.getOnePlayer(id);
-	}
+	} 
 	
 	@GetMapping("/view-add-data")
 	PlayerAddDataViewDto getPlayerPositions() {
