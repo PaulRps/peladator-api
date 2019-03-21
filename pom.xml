@@ -19,7 +19,7 @@
 		<java.version>1.8</java.version>
 		<!--<start-class>com.paulrps.peladator.PeladatorApi</start-class>-->
 	</properties>
-
+//https://www.baeldung.com/securing-a-restful-web-service-with-spring-security
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
