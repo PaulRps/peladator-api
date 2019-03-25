@@ -1,5 +1,6 @@
 package com.paulrps.peladator.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -34,12 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/foos").authenticated()
+                .antMatchers("/api/player/**").authenticated()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
-                .successHandler(mySuccessHandler)
-                .failureHandler(myFailureHandler)
+//                .successHandler(mySuccessHandler)
+//                .failureHandler(myFailureHandler)
                 .and()
                 .logout();
     }
