@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.paulrps.peladator.domain.dto.PlayerAddDataViewDto;
+import com.paulrps.peladator.domain.dto.User;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.services.PlayerService;
 
@@ -15,6 +16,12 @@ public class PlayerController {
 	
 	@Autowired
 	PlayerService playerService;
+	
+	@RequestMapping("/login")
+    public boolean login(@RequestBody User user) {
+        return
+          user.getUserName().equals("user") && user.getPassword().equals("password");
+    }
 
 	@GetMapping("/{id}")
 	Player getPlayer(@PathVariable(value="id") Long id) {
