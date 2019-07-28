@@ -2,6 +2,7 @@ package com.paulrps.peladator.controllers;
 
 import com.paulrps.peladator.config.security.TokenService;
 import com.paulrps.peladator.domain.dto.LoginFormDto;
+import com.paulrps.peladator.domain.dto.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> auth(@RequestBody @Valid LoginFormDto dto){
+    public ResponseEntity<TokenDto> auth(@RequestBody @Valid LoginFormDto dto){
 
         UsernamePasswordAuthenticationToken loginData = dto.convert();
 
@@ -34,8 +35,7 @@ public class AuthController {
 
             Authentication authenticate = authManager.authenticate(loginData);
             String token = tokenService.createToken(authenticate);
-            System.out.println(token);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok((new TokenDto(token, "Bearer")));
 
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();

@@ -1,6 +1,8 @@
 package com.paulrps.peladator.config.security;
 
 import com.paulrps.peladator.domain.entities.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,5 +32,22 @@ public class TokenService {
                 .setExpiration(expiration)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    public boolean isValidToken(String token){
+
+        try {
+
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public Long getUserId(String token) {
+        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Long.valueOf(body.getSubject());
     }
 }

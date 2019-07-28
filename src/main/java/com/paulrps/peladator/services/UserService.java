@@ -9,4 +9,6 @@ public interface UserService {
     public Optional<User> findByName(String name);
 
     public User save(User u);
+
+    public Optional<User> findById(Long userId);
 }

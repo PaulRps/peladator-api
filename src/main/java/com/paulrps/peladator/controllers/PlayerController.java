@@ -34,12 +34,12 @@ public class PlayerController {
 		return dto;
 	}
 	
-	@GetMapping("/")
+	@GetMapping
 	List<Player> getAllPlayers() {
 		return playerService.getAllPlayers();
 	}
 	
-	@PostMapping("/")
+	@PostMapping
 	List<Player> addPlayer(@RequestBody Player player) {
 		
 		playerService.addPlayer(player);
