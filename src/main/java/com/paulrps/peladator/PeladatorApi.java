@@ -1,5 +1,7 @@
 package com.paulrps.peladator;
 
+import com.paulrps.peladator.domain.entities.User;
+import com.paulrps.peladator.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,14 +26,12 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
 	}
 	
 	@Bean
-	CommandLineRunner runner(PlayerService playerService) {
+	CommandLineRunner runner(PlayerService playerService, UserService userService) {
 		return args -> {
-//			playerService.addPlayer ( new Player(1L,"João", 1, 2) );
-//			playerService.addPlayer ( new Player(2L,"Paulo", 1, 3) );
-//			playerService.addPlayer ( new Player(3L,"Pedro", 1, 2) );
-//			playerService.addPlayer ( new Player(4L,"Roberto", 1, 1) );
-//			playerService.addPlayer ( new Player(5L,"Marcos", 1, 1) );
-//			playerService.addPlayer ( new Player(6L,"Ronaldo", 1, 5) );
+			User u = new User();
+			u.setPassword("$2a$10$pjwIpeQ4nhUUkji323NkjuQahdESUnZCUMIgQO8F8D4RDqjflH0m.");
+			u.setName("Paulo");
+			userService.save(u);
 			playerService.addPlayer ( new Player(1L,"Messi", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
 			playerService.addPlayer ( new Player(2L,"Ronaldo", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
 			playerService.addPlayer ( new Player(3L,"C. Ronaldo", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
@@ -46,6 +46,5 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
 			playerService.addPlayer ( new Player(12L,"Romário", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
 		};
 	}
-
 }
 
