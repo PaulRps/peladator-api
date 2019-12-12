@@ -1,13 +1,12 @@
 package com.paulrps.peladator.controllers;
 
-import java.util.List;
-
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
+import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.paulrps.peladator.domain.dto.PlayerAddDataViewDto;
-import com.paulrps.peladator.domain.entities.Player;
-import com.paulrps.peladator.services.PlayerService;
+import java.util.List;
 
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -19,19 +18,15 @@ public class PlayerController {
 
 	@GetMapping("/{id}")
 	Player getPlayer(@PathVariable(value="id") Long id) {
-		
 		return playerService.getOnePlayer(id);
 	}
 	
-	@GetMapping("/view-add-data")
-	PlayerAddDataViewDto getPlayerPositions() {
-		
-		PlayerAddDataViewDto dto = new PlayerAddDataViewDto();
-		
-		dto.setPositions(playerService.getPlayerPositions());
-		dto.setSkillLevels(playerService.getPlayerLevels());
-		
-		return dto;
+	@GetMapping("/form-data")
+	PlayerFormDto getFormData() {
+		return PlayerFormDto.builder()
+					.positions(playerService.getPlayerPositions())
+					.skillLevels(playerService.getPlayerLevels())
+					.build();
 	}
 	
 	@GetMapping
@@ -41,18 +36,13 @@ public class PlayerController {
 	
 	@PostMapping
 	List<Player> addPlayer(@RequestBody Player player) {
-		
-		playerService.addPlayer(player);
-		
+		playerService.save(player);
 		return playerService.getAllPlayers();		
 	}
 
 	@DeleteMapping("/{id}")
 	List<Player> deletePlayer(@PathVariable(value="id") Long id) {
-
-		playerService.deletePlayer(id);
-
+		playerService.delete(id);//TODO: validar delecao
 		return playerService.getAllPlayers();
 	}
-	
 }

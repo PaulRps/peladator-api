@@ -20,58 +20,44 @@ public class PlayerServiceImpl implements PlayerService {
 	PlayerResository playerResository;
 	
 	@Override
-	public Player addPlayer(Player player) {
-		
+	public Player save(Player player) {
 		if (!Optional.ofNullable(player).isPresent()) {
 			throw new RuntimeException("");
 		}
 		
 		if (Optional.ofNullable(player.getId()).isPresent()) {
-			
 			Optional<Player> findById = playerResository.findById(player.getId());
-
 			if (findById.isPresent()) {
 				return player;
 			}
 		}
-		
-		return playerResository.save(player); 	
+		return playerResository.save(player);
 	}	
 	
 	@Override
-	public boolean deletePlayer(Long id) {
-		
+	public boolean delete(Long id) {
 		if (!Optional.ofNullable(id).isPresent()) {
 			throw new RuntimeException("");
 		}
-		
+
 		Optional<Player> player = playerResository.findById(id);
-		
 		if (player.isPresent()) {
-			
 			playerResository.delete(player.get());
-			
 			return true;
 		}
-		
 		return false;
 	}
 
 	@Override
 	public List<Player> getAllPlayers() {
-		
 		return playerResository.findAll();
 	}
 
-	
-
 	@Override
 	public Player getOnePlayer(Long id) {
-		
 		if (!Optional.ofNullable(id).isPresent()) {
 			throw new RuntimeException("");
 		}
-		
 		return playerResository.findById(id).orElse(null);
 	}
 	
@@ -79,13 +65,10 @@ public class PlayerServiceImpl implements PlayerService {
 	public List<PlayerPositionEnum> getPlayerPositions() {
 		PlayerPositionEnum.class.getEnumConstants();
 		return Arrays.asList(PlayerPositionEnum.values());
-		
 	}
 	
 	@Override
 	public List<PlayerLevelEnum> getPlayerLevels() {
 		return Arrays.asList(PlayerLevelEnum.values());
-		
 	}
-	
 }

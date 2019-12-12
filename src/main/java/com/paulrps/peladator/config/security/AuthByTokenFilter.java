@@ -31,7 +31,8 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
         if (isValid){
             authenticateUser(token);
         }
-
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers", "*");
         filterChain.doFilter(request, response);
     }
 

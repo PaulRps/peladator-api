@@ -45,7 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/player").permitAll()
+//        .antMatchers(HttpMethod.GET, "/player").permitAll() eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwZWxhZGF0b3IgQVBJIiwic3ViIjoiMSIsImlhdCI6MTU3NjE0OTA1MiwiZXhwIjoxNTc2MjM1NDUyfQ.TVj-fdUzHu7t_KESQK4F5uq2dYjNzuN_9HfFPn7DWR8
+//        TODO: remover depois 2 linhas
+        .antMatchers(HttpMethod.GET, "/player**").permitAll()
+        .antMatchers(HttpMethod.GET, "/player/**").permitAll()
+
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
         .anyRequest().authenticated()
 //        .and().formLogin();

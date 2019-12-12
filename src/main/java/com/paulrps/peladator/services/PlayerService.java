@@ -8,9 +8,9 @@ import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 
 public interface PlayerService {
 
-	public Player addPlayer(Player player);
+	public Player save(Player player);
 	
-	public boolean deletePlayer(Long id);
+	public boolean delete(Long id);
 
 	public List<Player> getAllPlayers();
 	
