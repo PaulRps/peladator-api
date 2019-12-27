@@ -11,16 +11,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public enum PlayerPositionEnum implements EnumInterface {
-	GK(1, "Goleiro"),
-	DF(2, "Zagueiro"),
-	LTE(3, "Lateral Esquerdo"),
-	LTR(4, "Lateral Direito"),
-	VOL(5, "Volante"),
-	MDC(6, "Meio de Campo"),
-	ATA(7, "Atacante");
+	GK(1, "Goleiro", "GL"),
+	DF(2, "Zagueiro", "ZAG"),
+	LTE(3, "Lateral Esquerdo", "LTE"),
+	LTR(4, "Lateral Direito", "LTD"),
+	VOL(5, "Volante", "VOL"),
+	MDC(6, "Meio de Campo", "MDC"),
+	ATA(7, "Atacante", "ATA");
 	
 	private Integer id;
 	private String name;
+	private String shortName;
 	
 	@Override
 	public List<EnumInterface> getValues() {

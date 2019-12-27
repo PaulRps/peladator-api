@@ -1,6 +1,7 @@
 package com.paulrps.peladator.domain.entities;
 
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
+import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,8 +28,15 @@ public class Player {
 	
 	@NotNull
 	private Integer age;
+
+	@NotNull
+	private Integer shirtNumber;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private PlayerLevelEnum skillLevel;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private PlayerPositionEnum position;
 }

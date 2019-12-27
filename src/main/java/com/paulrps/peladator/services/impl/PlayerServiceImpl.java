@@ -89,8 +89,8 @@ public class PlayerServiceImpl implements PlayerService {
 				.data(
 					Stream.of(
 							new AbstractMap.SimpleEntry<>("one", teamOne),
-							new AbstractMap.SimpleEntry<>("four", teamOne),
-							new AbstractMap.SimpleEntry<>("three", teamOne),
+//							new AbstractMap.SimpleEntry<>("four", teamOne),
+//							new AbstractMap.SimpleEntry<>("three", teamOne),
 							new AbstractMap.SimpleEntry<>("two", teamTwo))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
 				.build();
