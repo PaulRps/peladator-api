@@ -1,18 +1,19 @@
 package com.paulrps.peladator.domain.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
+import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
+@Builder
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="tb_player")
 public class Player {
@@ -27,10 +28,15 @@ public class Player {
 	
 	@NotNull
 	private Integer age;
+
+	@NotNull
+	private Integer shirtNumber;
 	
 	@NotNull
-	private String skillLevel;
-	
-	public Player() {}
-	
+	@Enumerated(EnumType.STRING)
+	private PlayerLevelEnum skillLevel;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private PlayerPositionEnum position;
 }

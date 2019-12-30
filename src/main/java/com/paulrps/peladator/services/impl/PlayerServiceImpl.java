@@ -1,9 +1,10 @@
 package com.paulrps.peladator.services.impl;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.paulrps.peladator.domain.dto.TeamsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,58 +21,37 @@ public class PlayerServiceImpl implements PlayerService {
 	PlayerResository playerResository;
 	
 	@Override
-	public Player addPlayer(Player player) {
-		
+	public Player save(Player player) {
 		if (!Optional.ofNullable(player).isPresent()) {
-			throw new RuntimeException("");
+			throw new RuntimeException("");//TODO: define structure of messages
 		}
-		
-		if (Optional.ofNullable(player.getId()).isPresent()) {
-			
-			Optional<Player> findById = playerResository.findById(player.getId());
-
-			if (findById.isPresent()) {
-				return player;
-			}
-		}
-		
-		return playerResository.save(player); 	
+		return playerResository.save(player);
 	}	
 	
 	@Override
-	public boolean deletePlayer(Long id) {
-		
+	public boolean delete(Long id) {
 		if (!Optional.ofNullable(id).isPresent()) {
 			throw new RuntimeException("");
 		}
-		
+
 		Optional<Player> player = playerResository.findById(id);
-		
 		if (player.isPresent()) {
-			
 			playerResository.delete(player.get());
-			
 			return true;
 		}
-		
 		return false;
 	}
 
 	@Override
-	public List<Player> getAllPlayers() {
-		
+	public List<Player> getAll() {
 		return playerResository.findAll();
 	}
 
-	
-
 	@Override
-	public Player getOnePlayer(Long id) {
-		
+	public Player getOne(Long id) {
 		if (!Optional.ofNullable(id).isPresent()) {
 			throw new RuntimeException("");
 		}
-		
 		return playerResository.findById(id).orElse(null);
 	}
 	
@@ -79,13 +59,40 @@ public class PlayerServiceImpl implements PlayerService {
 	public List<PlayerPositionEnum> getPlayerPositions() {
 		PlayerPositionEnum.class.getEnumConstants();
 		return Arrays.asList(PlayerPositionEnum.values());
-		
 	}
 	
 	@Override
 	public List<PlayerLevelEnum> getPlayerLevels() {
 		return Arrays.asList(PlayerLevelEnum.values());
-		
 	}
-	
+
+	@Override
+	public void update(Player player) {
+		playerResository.save(player);
+	}
+
+	@Override
+	public TeamsDto sortTeams(List<Player> players) {
+		List<Player> teamOne = new ArrayList<>();
+		List<Player> teamTwo = new ArrayList<>();
+		boolean one = true;
+		for (Player p : players) {
+			if (one) {
+				teamOne.add(p);
+				one = false;
+			} else {
+				teamTwo.add(p);
+				one = true;
+			}
+		}
+		return TeamsDto.builder()
+				.data(
+					Stream.of(
+							new AbstractMap.SimpleEntry<>("one", teamOne),
+//							new AbstractMap.SimpleEntry<>("four", teamOne),
+//							new AbstractMap.SimpleEntry<>("three", teamOne),
+							new AbstractMap.SimpleEntry<>("two", teamTwo))
+						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
+				.build();
+	}
 }

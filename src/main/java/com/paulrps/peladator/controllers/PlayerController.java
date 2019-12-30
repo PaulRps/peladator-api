@@ -1,58 +1,60 @@
 package com.paulrps.peladator.controllers;
 
-import java.util.List;
-
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
+import com.paulrps.peladator.domain.dto.TeamsDto;
+import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.paulrps.peladator.domain.dto.PlayerAddDataViewDto;
-import com.paulrps.peladator.domain.entities.Player;
-import com.paulrps.peladator.services.PlayerService;
+import java.util.List;
 
-@CrossOrigin(origins = "https://peladator.netlify.com", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:4200", "https://peladator.netlify.com"}, maxAge = 3600)
 @RestController
-@RequestMapping("api/player")
+@RequestMapping("player")
 public class PlayerController {
 	
 	@Autowired
 	PlayerService playerService;
 
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	Player getPlayer(@PathVariable(value="id") Long id) {
-		
-		return playerService.getOnePlayer(id);
+		return playerService.getOne(id);
 	}
 	
-	@GetMapping("/view-add-data")
-	PlayerAddDataViewDto getPlayerPositions() {
-		
-		PlayerAddDataViewDto dto = new PlayerAddDataViewDto();
-		
-		dto.setPositions(playerService.getPlayerPositions());
-		dto.setSkillLevels(playerService.getPlayerLevels());
-		
-		return dto;
+	@GetMapping("form-data")
+	PlayerFormDto getFormData() {
+		return PlayerFormDto.builder()
+					.positions(playerService.getPlayerPositions())
+					.skillLevels(playerService.getPlayerLevels())
+					.build();
 	}
 	
-	@GetMapping("/")
+	@GetMapping
 	List<Player> getAllPlayers() {
-		return playerService.getAllPlayers();
+		return playerService.getAll();
 	}
 	
-	@PostMapping("/")
-	List<Player> addPlayer(@RequestBody Player player) {
-		
-		playerService.addPlayer(player);
-		
-		return playerService.getAllPlayers();		
+	@PostMapping
+	List<Player> save(@RequestBody Player player) {
+		playerService.save(player);
+		return playerService.getAll();
 	}
 
-	@DeleteMapping("/{id}")
-	List<Player> deletePlayer(@PathVariable(value="id") Long id) {
-
-		playerService.deletePlayer(id);
-
-		return playerService.getAllPlayers();
+	@PutMapping
+	List<Player> update(@RequestBody Player player) {
+		playerService.update(player);
+		return playerService.getAll();
 	}
-	
+
+	@PostMapping("sort-teams")
+	TeamsDto sortTeams(@RequestBody List<Player> players) {
+		return playerService.sortTeams(players);
+	}
+
+	@DeleteMapping("{id}")
+	List<Player> delete(@PathVariable(value="id") Long id) {
+		playerService.delete(id);//TODO: validar delecao
+		return playerService.getAll();
+	}
 }

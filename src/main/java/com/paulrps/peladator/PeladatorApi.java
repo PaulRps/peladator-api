@@ -1,15 +1,13 @@
 package com.paulrps.peladator;
 
+import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
+import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import com.paulrps.peladator.services.PlayerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-
-import com.paulrps.peladator.domain.entities.Player;
-import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
-import com.paulrps.peladator.services.PlayerService;
 
 @SpringBootApplication
 public class PeladatorApi /*extends SpringBootServletInitializer*/ {
@@ -26,26 +24,19 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
 	@Bean
 	CommandLineRunner runner(PlayerService playerService) {
 		return args -> {
-//			playerService.addPlayer ( new Player(1L,"João", 1, 2) );
-//			playerService.addPlayer ( new Player(2L,"Paulo", 1, 3) );
-//			playerService.addPlayer ( new Player(3L,"Pedro", 1, 2) );
-//			playerService.addPlayer ( new Player(4L,"Roberto", 1, 1) );
-//			playerService.addPlayer ( new Player(5L,"Marcos", 1, 1) );
-//			playerService.addPlayer ( new Player(6L,"Ronaldo", 1, 5) );
-			playerService.addPlayer ( new Player(1L,"Messi", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(2L,"Ronaldo", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(3L,"C. Ronaldo", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(4L,"Neymar", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(5L,"Bale", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(6L,"Zico", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(7L,"Pele", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(8L,"Garrincha", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(9L,"Pepe", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(10L,"Tostão", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(11L,"Bebeto", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
-			playerService.addPlayer ( new Player(12L,"Romário", 1, PlayerLevelEnum.JOGA_MUITO.getDescription()) );
+			playerService.save( Player.builder().id(1L).name("Messi").age(34).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(2L).name("Ronaldo").age(41).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(3L).name("C. Ronaldo").age(31).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build());
+			playerService.save( Player.builder().id(4L).name("Neymar").age(28).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(5L).name("Bale").age(31).shirtNumber(10).skillLevel(PlayerLevelEnum.BOLEIRO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(6L).name("Zico").age(71).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(7L).name("Pepe").age(31).shirtNumber(10).skillLevel(PlayerLevelEnum.TEIMOSO).position(PlayerPositionEnum.DF).build() );
+			playerService.save( Player.builder().id(8L).name("Nesta").age(51).shirtNumber(10).skillLevel(PlayerLevelEnum.MEDIANO).position(PlayerPositionEnum.DF).build() );
+			playerService.save( Player.builder().id(9L).name("Bebeto").age(41).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(10L).name("Romário").age(51).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
+			playerService.save( Player.builder().id(11L).name("Dida").age(41).shirtNumber(12).skillLevel(PlayerLevelEnum.BOLEIRO).position(PlayerPositionEnum.GK).build() );
+			playerService.save( Player.builder().id(12L).name("Tafarel").age(41).shirtNumber(1).skillLevel(PlayerLevelEnum.BOLEIRO).position(PlayerPositionEnum.GK).build() );
 		};
 	}
-
 }
 

@@ -42,12 +42,12 @@ public class PaymentController {
 		return addPayment;
 	}
 	
-	@GetMapping("/")
+	@GetMapping
 	List<Payment> getAllPlayers() {
 		return paymentService.getAllPayments();
 	}
 	
-	@PostMapping("/")
+	@PostMapping
 	Payment addPlayer(@RequestBody Payment payment) {
 		return paymentService.addPayment(payment);		
 	}
