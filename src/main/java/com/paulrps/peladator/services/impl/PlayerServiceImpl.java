@@ -70,29 +70,4 @@ public class PlayerServiceImpl implements PlayerService {
 	public void update(Player player) {
 		playerResository.save(player);
 	}
-
-	@Override
-	public TeamsDto sortTeams(List<Player> players) {
-		List<Player> teamOne = new ArrayList<>();
-		List<Player> teamTwo = new ArrayList<>();
-		boolean one = true;
-		for (Player p : players) {
-			if (one) {
-				teamOne.add(p);
-				one = false;
-			} else {
-				teamTwo.add(p);
-				one = true;
-			}
-		}
-		return TeamsDto.builder()
-				.data(
-					Stream.of(
-							new AbstractMap.SimpleEntry<>("one", teamOne),
-//							new AbstractMap.SimpleEntry<>("four", teamOne),
-//							new AbstractMap.SimpleEntry<>("three", teamOne),
-							new AbstractMap.SimpleEntry<>("two", teamTwo))
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-				.build();
-	}
 }

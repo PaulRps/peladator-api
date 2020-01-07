@@ -22,6 +22,4 @@ public interface PlayerService {
 	public List<PlayerLevelEnum> getPlayerLevels();
 
     public void update(Player player);
-
-    public TeamsDto sortTeams(List<Player> players);
 }

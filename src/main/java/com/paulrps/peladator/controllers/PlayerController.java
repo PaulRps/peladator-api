@@ -3,11 +3,19 @@ package com.paulrps.peladator.controllers;
 import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.dto.TeamsDto;
 import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin(origins = {"http://localhost:4200", "https://peladator.netlify.com"}, maxAge = 3600)
 @RestController
@@ -47,14 +55,25 @@ public class PlayerController {
 		return playerService.getAll();
 	}
 
-	@PostMapping("sort-teams")
-	TeamsDto sortTeams(@RequestBody List<Player> players) {
-		return playerService.sortTeams(players);
-	}
-
 	@DeleteMapping("{id}")
 	List<Player> delete(@PathVariable(value="id") Long id) {
 		playerService.delete(id);//TODO: validar delecao
 		return playerService.getAll();
+	}
+
+	@GetMapping("groupby-position")
+	Map<PlayerPositionEnum, List<Player>> getByPosition() {
+		Map<PlayerPositionEnum, List<Player>> positionMap = new TreeMap<>();
+		Stream.of(PlayerPositionEnum.values()).forEach(p -> {
+			positionMap.put(p, new ArrayList<>());
+		});
+
+		playerService.getAll()
+				.stream()
+				.forEach(p -> {
+					positionMap.get(p.getPosition()).add(p);
+				});
+
+		return positionMap;
 	}
 }
