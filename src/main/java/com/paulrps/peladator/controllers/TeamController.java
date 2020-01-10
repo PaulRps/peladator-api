@@ -1,7 +1,7 @@
 package com.paulrps.peladator.controllers;
 
-import com.paulrps.peladator.domain.dto.TeamsDto;
-import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.dto.SortTeamDto;
+import com.paulrps.peladator.domain.dto.TeamDto;
 import com.paulrps.peladator.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class TeamController {
     TeamService teamService;
 
     @PostMapping("sort-teams")
-    TeamsDto sortTeams(@RequestBody List<Player> players) {
-        return teamService.sort(players);
+    List<TeamDto> sortTeams(@RequestBody SortTeamDto dto) {
+        return teamService.sort(dto);
     }
 }

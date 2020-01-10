@@ -2,7 +2,6 @@ package com.paulrps.peladator.services;
 
 import java.util.List;
 
-import com.paulrps.peladator.domain.dto.TeamsDto;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;

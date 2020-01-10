@@ -36,6 +36,7 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
 			playerService.save( Player.builder().id(10L).name("Romário").age(51).shirtNumber(10).skillLevel(PlayerLevelEnum.JOGA_MUITO).position(PlayerPositionEnum.ATA).build() );
 			playerService.save( Player.builder().id(11L).name("Dida").age(41).shirtNumber(12).skillLevel(PlayerLevelEnum.BOLEIRO).position(PlayerPositionEnum.GK).build() );
 			playerService.save( Player.builder().id(12L).name("Tafarel").age(41).shirtNumber(1).skillLevel(PlayerLevelEnum.BOLEIRO).position(PlayerPositionEnum.GK).build() );
+			playerService.save( Player.builder().id(13L).name("Julio").age(41).shirtNumber(1).skillLevel(PlayerLevelEnum.BOLEIRO).position(PlayerPositionEnum.GK).build() );
 		};
 	}
 }
