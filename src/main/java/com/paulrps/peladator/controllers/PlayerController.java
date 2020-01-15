@@ -2,13 +2,11 @@ package com.paulrps.peladator.controllers;
 
 import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Player;
-import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:4200", "https://peladator.netlify.com"}, maxAge = 3600)
 @RestController
@@ -54,21 +52,4 @@ public class PlayerController {
 		return playerService.getAll();
 	}
 
-	@GetMapping("groupby-position")
-	Map<String, List<Player>> getByPosition() {
-		Map<String, List<Player>> positionMap = new LinkedHashMap<>();
-		Stream.of(PlayerPositionEnum.values())
-				.sorted(Comparator.comparingInt(PlayerPositionEnum::getId))
-				.forEach(p -> {
-			positionMap.put(p.getName(), new ArrayList<>());
-		});
-
-		playerService.getAll()
-				.stream()
-				.forEach(p -> {
-					positionMap.get(p.getPosition().getName()).add(p);
-				});
-
-		return positionMap;
-	}
 }

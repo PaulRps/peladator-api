@@ -16,6 +16,11 @@ public class TeamController {
     @Autowired
     TeamService teamService;
 
+    @GetMapping("load-teams-page")
+    SortTeamDto loadTeamsPage() {
+        return teamService.loadTeamsPage();
+    }
+
     @PostMapping("sort-teams")
     List<TeamDto> sortTeams(@RequestBody SortTeamDto dto) {
         return teamService.sort(dto);

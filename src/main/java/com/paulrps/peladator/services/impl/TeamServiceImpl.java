@@ -2,52 +2,45 @@ package com.paulrps.peladator.services.impl;
 
 import com.paulrps.peladator.domain.dto.SortTeamDto;
 import com.paulrps.peladator.domain.dto.TeamDto;
-import com.paulrps.peladator.domain.entities.Player;
-import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import com.paulrps.peladator.domain.enums.EnumInterface;
+import com.paulrps.peladator.domain.enums.SortTeamStrategyEnum;
+import com.paulrps.peladator.services.PlayerService;
 import com.paulrps.peladator.services.TeamService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
+    @Autowired
+    PlayerService playerService;
+
+    @Override
+    public SortTeamDto loadTeamsPage() {
+        return SortTeamDto.builder()
+                .sortStrategies(Stream.of(SortTeamStrategyEnum.values())
+                        .filter(s->!SortTeamStrategyEnum.SKILL_LEVEL.isEqual(s))
+                        .collect(toList()))
+                .playersGroupedByPosition(playerService.groupByPositionAndSort())
+                .build();
+    }
+
     @Override
     public List<TeamDto> sort(SortTeamDto dto) {
-        List<TeamDto> teams = new ArrayList<>();
-        List<Integer> teamsOrder = new ArrayList<>();
-        for (int i = 0; i < dto.getAmount(); i++) {
-            teams.add(TeamDto.builder().name("Time "+ (i+1)).players(new ArrayList<>()).build());
-            teamsOrder.add(i);
+        if (!Optional.ofNullable(dto).isPresent()) {
+            //TODO: throw exception
+            throw new RuntimeException("");
         }
-
-        Map<@NotNull PlayerPositionEnum, List<Player>> playersByPosition = dto.getPlayers().stream()
-                                                                                .collect(Collectors.groupingBy(Player::getPosition));
-        playersByPosition.forEach((pos,players) -> {
-            boolean nextPos = false;
-            Collections.sort(players, Comparator.comparing(Player::getSkillLevel).reversed());
-            for (int i = 0; i < players.size() && !nextPos;) {
-                List<Integer> teamsOrderClone = new ArrayList<>(teamsOrder);
-                for (int j = 0; j < dto.getAmount(); j++) {
-                    Collections.shuffle(teamsOrderClone, new Random());
-                    Integer randomPos = teamsOrderClone.remove(0);
-                    if (i < players.size()) {
-                        teams.get(randomPos).getPlayers().add(players.get(i));
-                    }
-                    i++;
-                    if (PlayerPositionEnum.GK.isEqual(pos) && j+1 == dto.getAmount()) {
-                        nextPos = true;
-                        break;
-                    }
-                }
-            }
-        });
-        
-        teams.forEach(team -> {
-            team.getPlayers().sort(Comparator.comparing(Player::getPosition));
-        });
-        return teams;
+        if (Optional.ofNullable(dto.getSortStrategy()).isPresent()) {
+            return dto.getSortStrategy().sort(dto);
+        } else {
+            return SortTeamStrategyEnum.SKILL_LEVEL.sort(dto);
+        }
     }
 }
