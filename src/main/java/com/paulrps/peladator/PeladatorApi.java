@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
 public class PeladatorApi /*extends SpringBootServletInitializer*/ {
@@ -20,7 +21,8 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
 	public static void main(String[] args) {
 		SpringApplication.run(PeladatorApi.class, args);
 	}
-	
+
+	@Profile("default")
 	@Bean
 	CommandLineRunner runner(PlayerService playerService) {
 		return args -> {
