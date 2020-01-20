@@ -11,6 +11,7 @@ server:
 #    url: jdbc:mysql://localhost:3306/peladator
 #    username: peladator
 #    password: peladator
+spring:
   datasource:
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
