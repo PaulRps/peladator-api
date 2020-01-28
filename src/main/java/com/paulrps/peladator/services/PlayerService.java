@@ -9,19 +9,19 @@ import java.util.Map;
 
 public interface PlayerService {
 
-	public Player save(Player player);
+    public Player save(Player player);
 
-	public void update(Player player);
+    public void update(Player player);
 
-	public boolean delete(Long id);
+    public boolean delete(Long id);
 
-	public Player getOne(Long id);
+    public Player getOne(Long id);
 
-	public List<Player> getAll();
+    public List<Player> getAll();
 
-	public List<PlayerPositionEnum> getPlayerPositions();
+    public List<PlayerPositionEnum> getPlayerPositions();
 
-	public List<PlayerLevelEnum> getPlayerLevels();
+    public List<PlayerLevelEnum> getPlayerLevels();
 
-	public Map<String, List<Player>> groupByPositionAndSort();
+    public Map<String, List<Player>> groupByPositionAndSort();
 }
