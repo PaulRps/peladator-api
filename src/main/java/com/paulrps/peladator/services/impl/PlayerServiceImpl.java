@@ -1,10 +1,12 @@
 package com.paulrps.peladator.services.impl;
 
 import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.entities.User;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
 import com.paulrps.peladator.services.PlayerService;
+import com.paulrps.peladator.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +19,20 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     PlayerResository playerResository;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public Player save(Player player) {
         if (!Optional.ofNullable(player).isPresent()) {
             throw new RuntimeException("");//TODO: define structure of messages
+        }
+        Optional<User> user = userService.findByName("Paulo");
+        if (!user.isPresent()) {
+            userService.save(User.builder()
+                .name("Paulo")
+                .password("$2a$10$pjwIpeQ4nhUUkji323NkjuQahdESUnZCUMIgQO8F8D4RDqjflH0m.")
+                .build());
         }
         return playerResository.save(player);
     }
