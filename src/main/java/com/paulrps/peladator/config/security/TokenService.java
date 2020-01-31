@@ -20,28 +20,28 @@ public class TokenService {
     @Value("${api.jwt.secret}")
     private String secret;
 
-    public String createToken(Authentication auth){
+    public String createToken(Authentication auth) {
         User user = (User) auth.getPrincipal();
         Date today = new Date();
         //TODO: change sum of dates
         Date expiration = new Date(today.getTime() + this.expiration);
         return Jwts.builder()
-                .setIssuer("peladator API")
-                .setSubject(user.getId().toString())
-                .setIssuedAt(today)
-                .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+            .setIssuer("peladator API")
+            .setSubject(user.getId().toString())
+            .setIssuedAt(today)
+            .setExpiration(expiration)
+            .signWith(SignatureAlgorithm.HS256, secret)
+            .compact();
     }
 
-    public boolean isValidToken(String token){
+    public boolean isValidToken(String token) {
 
         try {
 
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

@@ -27,7 +27,7 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
 
         boolean isValid = tokenService.isValidToken(token);
 
-        if (isValid){
+        if (isValid) {
             authenticateUser(token);
         }
 
@@ -39,7 +39,7 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
         Long userId = tokenService.getUserId(token);
         Optional<User> user = userService.findById(userId);
 
-        if (user.isPresent()){
+        if (user.isPresent()) {
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
@@ -49,7 +49,7 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
-        if (token == null || token.isEmpty() || !token.startsWith("Bearer")){
+        if (token == null || token.isEmpty() || !token.startsWith("Bearer")) {
             return null;
         }
 

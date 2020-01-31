@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User u) {
 
-        if (!Optional.ofNullable(u).isPresent()){
+        if (!Optional.ofNullable(u).isPresent()) {
             return null;
         }
 

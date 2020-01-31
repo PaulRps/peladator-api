@@ -15,28 +15,28 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="tb_player")
+@Table(name = "tb_player")
 public class Player {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "pk_player")
-	private Long id;
-	
-	@NotNull
-	private String name;
-	
-	@NotNull
-	private Integer age;
 
-	@NotNull
-	private Integer shirtNumber;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private PlayerLevelEnum skillLevel;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pk_player")
+    private Long id;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private PlayerPositionEnum position;
+    @NotNull
+    private String name;
+
+    @NotNull
+    private Integer age;
+
+    @NotNull
+    private Integer shirtNumber;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PlayerLevelEnum skillLevel;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PlayerPositionEnum position;
 }

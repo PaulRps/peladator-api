@@ -20,7 +20,7 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<User> user = userService.findByName(s);
 
-        if (user.isPresent()){
+        if (user.isPresent()) {
             return user.get();
         }
 

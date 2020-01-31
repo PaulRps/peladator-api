@@ -43,14 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //AUTHORIZATION CONFIGURATIONS
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-        .antMatchers("/auth").permitAll()
-        .anyRequest().authenticated()
-//        .and().formLogin();
-        .and().csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().addFilterBefore(new AuthByTokenFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .antMatchers("/auth").permitAll()
+            .anyRequest().authenticated()
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().addFilterBefore(new AuthByTokenFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
     }
 
     //STATIC FILES (imgs, .js) CONFIGURATIONS

@@ -11,9 +11,9 @@ import java.util.List;
 @Data
 @Builder
 public class PlayerFormDto {
-	
-	private List<PlayerPositionEnum> positions;
-	private List<PlayerLevelEnum> skillLevels;
-	private Player player;
+
+    private List<PlayerPositionEnum> positions;
+    private List<PlayerLevelEnum> skillLevels;
+    private Player player;
 
 }
