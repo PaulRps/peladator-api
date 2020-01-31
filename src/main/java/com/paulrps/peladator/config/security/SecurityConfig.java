@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -45,19 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//        .antMatchers(HttpMethod.GET, "/player").permitAll() eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwZWxhZGF0b3IgQVBJIiwic3ViIjoiMSIsImlhdCI6MTU3NjE0OTA1MiwiZXhwIjoxNTc2MjM1NDUyfQ.TVj-fdUzHu7t_KESQK4F5uq2dYjNzuN_9HfFPn7DWR8
-//        TODO: remover depois 4 linhas
-        .antMatchers(HttpMethod.GET, "/player**").permitAll()
-        .antMatchers(HttpMethod.POST, "/player**").permitAll()
-        .antMatchers(HttpMethod.GET, "/player/**").permitAll()
-        .antMatchers(HttpMethod.POST, "/player/**").permitAll()
-        .antMatchers(HttpMethod.OPTIONS, "/player/**").permitAll()
-        .antMatchers(HttpMethod.OPTIONS, "/player**").permitAll()
-        .antMatchers(HttpMethod.DELETE, "/player/**").permitAll()
-        .antMatchers(HttpMethod.DELETE, "/player").permitAll()
-
-        .antMatchers(HttpMethod.POST, "/auth").permitAll()
-//        .anyRequest().authenticated()
+        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+        .antMatchers("/auth").permitAll()
+        .anyRequest().authenticated()
 //        .and().formLogin();
         .and().csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

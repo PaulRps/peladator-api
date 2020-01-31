@@ -5,7 +5,6 @@ import com.paulrps.peladator.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -31,9 +30,6 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
         if (isValid){
             authenticateUser(token);
         }
-        //TODO: remove lines
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-        response.setHeader("Access-Control-Allow-Headers", "*");
 
         filterChain.doFilter(request, response);
     }

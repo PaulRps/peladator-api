@@ -1,16 +1,15 @@
 package com.paulrps.peladator;
 
+import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.entities.User;
+import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import com.paulrps.peladator.services.PlayerService;
 import com.paulrps.peladator.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import com.paulrps.peladator.domain.entities.Player;
-import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
-import com.paulrps.peladator.services.PlayerService;
 
 @SpringBootApplication
 public class PeladatorApi /*extends SpringBootServletInitializer*/ {
@@ -23,7 +22,7 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
 	public static void main(String[] args) {
 		SpringApplication.run(PeladatorApi.class, args);
 	}
-	
+
 	@Bean
 	CommandLineRunner runner(PlayerService playerService, UserService userService) {
 		return args -> {
