@@ -26,13 +26,10 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
         SpringApplication.run(PeladatorApi.class, args);
     }
 
-    @Value("${spring.profiles.active}")
-    private String profile;
-
     @Bean
     CommandLineRunner runner(PlayerService playerService, UserService userService) {
         return args -> {
-            if ("default".equals(profile)) {
+            if ("default".equals(System.getenv("SPRING_PROFILES_ACTIVE"))) {
                 userService.save(User.builder()
                     .name("Paulo")
                     .password("$2a$10$pjwIpeQ4nhUUkji323NkjuQahdESUnZCUMIgQO8F8D4RDqjflH0m.")
