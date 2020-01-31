@@ -1,4 +1,8 @@
 ---
+api:
+    jwt:
+        expiration: 86400000
+        secret: secret
 spring:
     profiles:
         active: heroku
