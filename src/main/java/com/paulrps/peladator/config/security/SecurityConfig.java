@@ -47,14 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers("/auth").permitAll()
-            .anyRequest().authenticated()
+//            .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().addFilterBefore(new AuthByTokenFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
     }
 
     //STATIC FILES (imgs, .js) CONFIGURATIONS
     @Override
-    public void configure(WebSecurity web) throws Exception {
-
-    }
+    public void configure(WebSecurity web) throws Exception { }
 }
