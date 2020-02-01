@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -40,14 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(authService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    @Bean
+    CorsFilter myCors() {
+        return new CorsFilter();
+    }
+
     //AUTHORIZATION CONFIGURATIONS
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.addFilterBefore(myCors(), SessionManagementFilter.class)
+            .csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers("/auth").permitAll()
-//            .anyRequest().authenticated()
+            .anyRequest().authenticated()
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().addFilterBefore(new AuthByTokenFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
     }

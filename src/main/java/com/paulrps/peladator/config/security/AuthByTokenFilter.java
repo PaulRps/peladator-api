@@ -1,7 +1,6 @@
 package com.paulrps.peladator.config.security;
 
 import com.paulrps.peladator.domain.entities.User;
-import com.paulrps.peladator.domain.enums.RoleEnum;
 import com.paulrps.peladator.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,15 +31,6 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
             authenticateUser(token);
         }
 
-        Optional<User> user = userService.findByName("Paulo");
-        if (!user.isPresent()) {
-            userService.save(User.builder()
-                .name("Paulo")
-                .password("$2a$10$pjwIpeQ4nhUUkji323NkjuQahdESUnZCUMIgQO8F8D4RDqjflH0m.")
-                .role(RoleEnum.ROLE_ADMIN)
-                .build());
-        }
-
         filterChain.doFilter(request, response);
     }
 
@@ -59,7 +49,7 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
-        if (token == null || token.isEmpty() || !token.startsWith("Bearer")) {
+        if (token == null || token.isEmpty() || !token.startsWith(TokenService.TOKEN_TYPE)) {
             return null;
         }
 

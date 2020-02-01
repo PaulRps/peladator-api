@@ -14,6 +14,8 @@ import java.util.Date;
 @Service
 public class TokenService {
 
+    public static final String TOKEN_TYPE = "Bearer";
+
     @Value("${api.jwt.expiration}")
     private Long expiration;
 
