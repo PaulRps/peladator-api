@@ -54,5 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //STATIC FILES (imgs, .js) CONFIGURATIONS
     @Override
-    public void configure(WebSecurity web) throws Exception { }
+    public void configure(WebSecurity web) throws Exception {
+    }
 }

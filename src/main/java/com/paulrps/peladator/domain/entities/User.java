@@ -1,5 +1,6 @@
 package com.paulrps.peladator.domain.entities;
 
+import com.paulrps.peladator.domain.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,28 +9,34 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "tb_user")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
+    @Column(name = "role")
+    private RoleEnum role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return Arrays.asList(this.role);
     }
 
     @Override
