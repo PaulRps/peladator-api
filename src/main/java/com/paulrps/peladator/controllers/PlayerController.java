@@ -4,6 +4,7 @@ import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,39 +17,39 @@ public class PlayerController {
     PlayerService playerService;
 
     @GetMapping("{id}")
-    Player getPlayer(@PathVariable(value = "id") Long id) {
-        return playerService.getOne(id);
+    ResponseEntity<Player> getPlayer(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(playerService.getOne(id));
     }
 
     @GetMapping("form-data")
-    PlayerFormDto getFormData() {
-        return PlayerFormDto.builder()
+    ResponseEntity<PlayerFormDto> getFormData() {
+        return ResponseEntity.ok(PlayerFormDto.builder()
             .positions(playerService.getPlayerPositions())
             .skillLevels(playerService.getPlayerLevels())
-            .build();
+            .build());
     }
 
     @GetMapping
-    List<Player> getAllPlayers() {
-        return playerService.getAll();
+    ResponseEntity<List<Player>> getAllPlayers() {
+        return ResponseEntity.ok(playerService.getAll());
     }
 
     @PostMapping
-    List<Player> save(@RequestBody Player player) {
+    ResponseEntity<List<Player>> save(@RequestBody Player player) {
         playerService.save(player);
-        return playerService.getAll();
+        return ResponseEntity.ok(playerService.getAll());
     }
 
     @PutMapping
-    List<Player> update(@RequestBody Player player) {
+    ResponseEntity<List<Player>> update(@RequestBody Player player) {
         playerService.update(player);
-        return playerService.getAll();
+        return ResponseEntity.ok(playerService.getAll());
     }
 
     @DeleteMapping("{id}")
-    List<Player> delete(@PathVariable(value = "id") Long id) {
+    ResponseEntity<List<Player>> delete(@PathVariable(value = "id") Long id) {
         playerService.delete(id);//TODO: validar delecao
-        return playerService.getAll();
+        return ResponseEntity.ok(playerService.getAll());
     }
 
 }

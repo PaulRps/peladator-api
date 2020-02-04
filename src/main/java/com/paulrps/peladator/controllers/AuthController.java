@@ -36,10 +36,12 @@ public class AuthController {
 
             Authentication authenticate = authManager.authenticate(loginData);
             String token = tokenService.createToken(authenticate);
+            User user = (User) authenticate.getPrincipal();
             return ResponseEntity.ok((TokenDto.builder()
-                .id(((User) authenticate.getPrincipal()).getId())
+                .id(user.getId())
                 .value(token)
                 .type(TokenService.TOKEN_TYPE)
+                .role(user.getRole())
                 .build()
             ));
 

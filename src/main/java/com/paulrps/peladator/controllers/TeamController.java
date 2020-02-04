@@ -4,6 +4,7 @@ import com.paulrps.peladator.domain.dto.SortTeamDto;
 import com.paulrps.peladator.domain.dto.TeamDto;
 import com.paulrps.peladator.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class TeamController {
     TeamService teamService;
 
     @GetMapping("load-teams-page")
-    SortTeamDto loadTeamsPage() {
-        return teamService.loadTeamsPage();
+    ResponseEntity<SortTeamDto> loadTeamsPage() {
+        return ResponseEntity.ok(teamService.loadTeamsPage());
     }
 
     @PostMapping("sort-teams")
-    List<TeamDto> sortTeams(@RequestBody SortTeamDto dto) {
-        return teamService.sort(dto);
+    ResponseEntity<List<TeamDto>> sortTeams(@RequestBody SortTeamDto dto) {
+        return ResponseEntity.ok(teamService.sort(dto));
     }
 }

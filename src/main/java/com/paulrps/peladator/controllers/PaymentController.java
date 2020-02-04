@@ -4,6 +4,7 @@ import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ public class PaymentController {
     PaymentService paymentService;
 
     @GetMapping("/{id}")
-    Payment getPlayer(@PathVariable(value = "id") Long id) {
+    ResponseEntity<Payment> getPlayer(@PathVariable(value = "id") Long id) {
 
         Player p = new Player();
         p.setId(1l);
@@ -33,16 +34,16 @@ public class PaymentController {
 
         Payment addPayment = paymentService.addPayment(py);
 
-        return addPayment;
+        return ResponseEntity.ok(addPayment);
     }
 
     @GetMapping
-    List<Payment> getAllPlayers() {
-        return paymentService.getAllPayments();
+    ResponseEntity<List<Payment>> getAllPlayers() {
+        return ResponseEntity.ok(paymentService.getAllPayments());
     }
 
     @PostMapping
-    Payment addPlayer(@RequestBody Payment payment) {
-        return paymentService.addPayment(payment);
+    ResponseEntity<Payment> addPlayer(@RequestBody Payment payment) {
+        return ResponseEntity.ok(paymentService.addPayment(payment));
     }
 }
