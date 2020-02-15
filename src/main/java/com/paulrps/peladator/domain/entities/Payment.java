@@ -1,5 +1,6 @@
 package com.paulrps.peladator.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Payment implements Serializable {
     @Column(name = "pk_payment")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_player")
     @NotNull
     private Player player;
@@ -29,6 +30,7 @@ public class Payment implements Serializable {
 
     @NotNull
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date date;
 
 

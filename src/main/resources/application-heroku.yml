@@ -15,6 +15,9 @@ spring:
             ddl-auto: update
         show-sql: true
         generate-ddl: true
+    jackson:
+        locale: pt-BR
+        time-zone: America/Sao_Paulo
 
 server:
     port: ${PORT:5000}

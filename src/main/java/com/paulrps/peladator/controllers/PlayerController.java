@@ -16,11 +16,6 @@ public class PlayerController {
     @Autowired
     PlayerService playerService;
 
-    @GetMapping("{id}")
-    ResponseEntity<Player> getPlayer(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(playerService.getOne(id));
-    }
-
     @GetMapping("form-data")
     ResponseEntity<PlayerFormDto> getFormData() {
         return ResponseEntity.ok(PlayerFormDto.builder()

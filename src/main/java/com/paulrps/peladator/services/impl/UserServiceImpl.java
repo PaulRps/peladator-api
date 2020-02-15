@@ -22,12 +22,12 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public Optional<User> findByName(String name) {
+    public Optional<User> getOne(String name) {
         return userRepository.findByName(name);
     }
 
     @Override
-    public Optional<User> findById(Long userId) {
+    public Optional<User> getOne(Long userId) {
         return userRepository.findById(userId);
     }
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 

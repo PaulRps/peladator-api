@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping("{id}")
     ResponseEntity<User> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id).get());
+        return ResponseEntity.ok(userService.getOne(id).get());
     }
 
     @GetMapping("form-data")
@@ -28,25 +28,25 @@ public class UserController {
 
     @GetMapping
     ResponseEntity<List<User>> getAll() {
-        return ResponseEntity.ok(userService.findAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @PostMapping
     ResponseEntity<List<User>> save(@RequestBody User user) {
         userService.save(user);
-        return ResponseEntity.ok(userService.findAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @PutMapping
     ResponseEntity<List<User>> update(@RequestBody User user) {
         userService.save(user);
-        return ResponseEntity.ok(userService.findAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @DeleteMapping("{id}")
     ResponseEntity<List<User>> delete(@PathVariable Long id) {
         userService.delete(id);
-        return ResponseEntity.ok(userService.findAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
 }

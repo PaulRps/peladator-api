@@ -37,7 +37,7 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
     private void authenticateUser(String token) {
 
         Long userId = tokenService.getUserId(token);
-        Optional<User> user = userService.findById(userId);
+        Optional<User> user = userService.getOne(userId);
 
         if (user.isPresent()) {
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());

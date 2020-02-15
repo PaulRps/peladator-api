@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface UserService {
 
-    public Optional<User> findById(Long userId);
+    public Optional<User> getOne(Long userId);
 
     public UserFormDto getFormData();
 
-    public Optional<User> findByName(String name);
+    public Optional<User> getOne(String name);
 
-    public List<User> findAll();
+    public List<User> getAll();
 
     public User save(User u);
 

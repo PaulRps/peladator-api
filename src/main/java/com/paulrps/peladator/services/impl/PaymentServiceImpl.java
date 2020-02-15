@@ -16,56 +16,44 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
 
     @Override
-    public Payment addPayment(Payment payment) {
+    public Payment save(Payment payment) {
 
         if (!Optional.ofNullable(payment).isPresent()) {
             throw new RuntimeException("");
-        }
-
-        if (Optional.ofNullable(payment.getId()).isPresent()) {
-
-            Optional<Payment> findById = paymentRepository.findById(payment.getId());
-
-            if (findById.isPresent()) {
-                return findById.get();
-            }
-
         }
 
         return paymentRepository.save(payment);
     }
 
     @Override
-    public boolean deletePayment(Long id) {
+    public void update(Payment payment) {
+        save(payment);
+    }
+
+    @Override
+    public boolean delete(Long id) {
 
         if (!Optional.ofNullable(id).isPresent()) {
             throw new RuntimeException("");
         }
 
         if (paymentRepository.findById(id).isPresent()) {
-
             paymentRepository.deleteById(id);
-
             return true;
         }
-
-
         return false;
     }
 
     @Override
-    public List<Payment> getAllPayments() {
-
+    public List<Payment> getAll() {
         return paymentRepository.findAll();
     }
 
     @Override
-    public Payment getOnePayment(Long id) {
-
+    public Payment getOne(Long id) {
         if (!Optional.ofNullable(id).isPresent()) {
             throw new RuntimeException("");
         }
-
         return paymentRepository.findById(id).orElse(null);
     }
 
