@@ -117,12 +117,12 @@
           <!--          </execution>-->
           <!-- On Maven verify phase, fail if any file
           (including unmodified) is badly formatted -->
-          <execution>
-            <id>validate-code-format</id>
-            <goals>
-              <goal>validate-code-format</goal>
-            </goals>
-          </execution>
+<!--          <execution>-->
+<!--            <id>validate-code-format</id>-->
+<!--            <goals>-->
+<!--              <goal>validate-code-format</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
         </executions>
         <configuration>
           <googleJavaFormatOptions>
