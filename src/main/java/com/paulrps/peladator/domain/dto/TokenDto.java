@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenDto {
-    private String value;
-    private String type;
-    private Long id;
-    private RoleEnum role;
+  private String value;
+  private String type;
+  private Long id;
+  private RoleEnum role;
 }

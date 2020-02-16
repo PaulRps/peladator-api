@@ -20,47 +20,52 @@ import org.springframework.security.web.session.SessionManagementFilter;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthService authService;
+  @Autowired private AuthService authService;
 
-    @Autowired
-    private TokenService tokenService;
+  @Autowired private TokenService tokenService;
 
-    @Autowired
-    private UserService userService;
+  @Autowired private UserService userService;
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Override
+  @Bean
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    //AUTHENTICATION CONFIGURARTIONS
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authService).passwordEncoder(new BCryptPasswordEncoder());
-    }
+  // AUTHENTICATION CONFIGURARTIONS
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(authService).passwordEncoder(new BCryptPasswordEncoder());
+  }
 
-    @Bean
-    CorsFilter myCors() {
-        return new CorsFilter();
-    }
+  @Bean
+  CorsFilter myCors() {
+    return new CorsFilter();
+  }
 
-    //AUTHORIZATION CONFIGURATIONS
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(myCors(), SessionManagementFilter.class)
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            .antMatchers("/auth").permitAll()
-            .anyRequest().authenticated()
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().addFilterBefore(new AuthByTokenFilter(tokenService, userService), UsernamePasswordAuthenticationFilter.class);
-    }
+  // AUTHORIZATION CONFIGURATIONS
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.addFilterBefore(myCors(), SessionManagementFilter.class)
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.OPTIONS, "/**")
+        .permitAll()
+        .antMatchers("/auth")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .addFilterBefore(
+            new AuthByTokenFilter(tokenService, userService),
+            UsernamePasswordAuthenticationFilter.class);
+  }
 
-    //STATIC FILES (imgs, .js) CONFIGURATIONS
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-    }
+  // STATIC FILES (imgs, .js) CONFIGURATIONS
+  @Override
+  public void configure(WebSecurity web) throws Exception {}
 }

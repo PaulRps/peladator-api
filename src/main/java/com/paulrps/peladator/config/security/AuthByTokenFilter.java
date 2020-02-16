@@ -2,57 +2,59 @@ package com.paulrps.peladator.config.security;
 
 import com.paulrps.peladator.domain.entities.User;
 import com.paulrps.peladator.services.UserService;
+import java.io.IOException;
+import java.util.Optional;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
-
 @AllArgsConstructor
 public class AuthByTokenFilter extends OncePerRequestFilter {
 
-    private TokenService tokenService;
-    private UserService userService;
+  private TokenService tokenService;
+  private UserService userService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
 
-        String token = getToken(request);
+    String token = getToken(request);
 
-        boolean isValid = tokenService.isValidToken(token);
+    boolean isValid = tokenService.isValidToken(token);
 
-        if (isValid) {
-            authenticateUser(token);
-        }
-
-        filterChain.doFilter(request, response);
+    if (isValid) {
+      authenticateUser(token);
     }
 
-    private void authenticateUser(String token) {
+    filterChain.doFilter(request, response);
+  }
 
-        Long userId = tokenService.getUserId(token);
-        Optional<User> user = userService.getOne(userId);
+  private void authenticateUser(String token) {
 
-        if (user.isPresent()) {
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
+    Long userId = tokenService.getUserId(token);
+    Optional<User> user = userService.getOne(userId);
+
+    if (user.isPresent()) {
+      UsernamePasswordAuthenticationToken auth =
+          new UsernamePasswordAuthenticationToken(user.get(), null, user.get().getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+  }
+
+  private String getToken(HttpServletRequest request) {
+
+    String token = request.getHeader("Authorization");
+
+    if (token == null || token.isEmpty() || !token.startsWith(TokenService.TOKEN_TYPE)) {
+      return null;
     }
 
-    private String getToken(HttpServletRequest request) {
-
-        String token = request.getHeader("Authorization");
-
-        if (token == null || token.isEmpty() || !token.startsWith(TokenService.TOKEN_TYPE)) {
-            return null;
-        }
-
-        return token.substring(7);
-    }
+    return token.substring(7);
+  }
 }
