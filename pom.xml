@@ -88,70 +88,88 @@
     <!--</dependency>-->
   </dependencies>
 
-  <build>
-    <!-- https://www.baeldung.com/spring-boot-war-tomcat-deploy -->
-    <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <!--<executions>-->
-        <!--<execution>-->
-        <!--<id>copy-dependencies</id>-->
-        <!--<phase>package</phase>-->
-        <!--<goals><goal>copy-dependencies</goal></goals>-->
-        <!--</execution>-->
-        <!--</executions>-->
-      </plugin>
-      <plugin>
-        <groupId>com.cosium.code</groupId>
-        <artifactId>maven-git-code-format</artifactId>
-        <version>1.36</version>
-        <executions>
-          <!-- On commit, format the modified java files -->
-<!--          <execution>-->
-          <!--            <id>install-formatter-hook</id>-->
-          <!--            <goals>-->
-          <!--              <goal>install-hooks</goal>-->
-          <!--            </goals>-->
-          <!--          </execution>-->
-          <!-- On Maven verify phase, fail if any file
-          (including unmodified) is badly formatted -->
-<!--          <execution>-->
-<!--            <id>validate-code-format</id>-->
-<!--            <goals>-->
-<!--              <goal>validate-code-format</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
-        </executions>
-        <configuration>
-          <googleJavaFormatOptions>
-            <aosp>false</aosp>
-            <fixImportsOnly>false</fixImportsOnly>
-            <skipSortingImports>false</skipSortingImports>
-            <skipRemovingUnusedImports>false</skipRemovingUnusedImports>
-          </googleJavaFormatOptions>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.cosium.code</groupId>
+            <artifactId>maven-git-code-format</artifactId>
+            <version>1.26</version>
+            <executions>
+              <!--              On commit, format the modified java files-->
+              <execution>
+                <id>install-formatter-hook</id>
+                <goals>
+                  <goal>install-hooks</goal>
+                </goals>
+              </execution>
+              <!-- On Maven verify phase, fail if any file
+              (including unmodified) is badly formatted -->
+              <execution>
+                <id>validate-code-format</id>
+                <goals>
+                  <goal>validate-code-format</goal>
+                </goals>
+              </execution>
+            </executions>
             <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>[3.5.4,)</version>
-                </requireMavenVersion>
-              </rules>
+              <googleJavaFormatOptions>
+                <aosp>false</aosp>
+                <fixImportsOnly>false</fixImportsOnly>
+                <skipSortingImports>false</skipSortingImports>
+                <skipRemovingUnusedImports>false</skipRemovingUnusedImports>
+              </googleJavaFormatOptions>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+          </plugin>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireMavenVersion>
+                      <version>[3.5.4,)</version>
+                    </requireMavenVersion>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>heroku</id>
+      <build>
+        <!-- https://www.baeldung.com/spring-boot-war-tomcat-deploy -->
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>copy-dependencies</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals><goal>copy-dependencies</goal></goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+          </plugin>
+
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
 
 </project>
