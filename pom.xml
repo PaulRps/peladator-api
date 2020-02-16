@@ -89,7 +89,7 @@
 
     <build>
         <!-- https://www.baeldung.com/spring-boot-war-tomcat-deploy -->
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
