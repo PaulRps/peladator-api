@@ -1,7 +1,9 @@
 package com.paulrps.peladator.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -35,4 +37,9 @@ public class Player {
   @NotNull
   @Enumerated(EnumType.STRING)
   private PlayerPositionEnum position;
+
+  @Transient
+  @Temporal(TemporalType.DATE)
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+  private Date paymentDate;
 }

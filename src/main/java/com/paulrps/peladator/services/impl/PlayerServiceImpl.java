@@ -1,12 +1,18 @@
 package com.paulrps.peladator.services.impl;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
+import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
+import com.paulrps.peladator.services.PaymentService;
 import com.paulrps.peladator.services.PlayerService;
 import java.util.*;
 import java.util.stream.Stream;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class PlayerServiceImpl implements PlayerService {
 
   @Autowired PlayerResository playerResository;
+  @Autowired PaymentService paymentService;
 
   @Override
   public Player save(Player player) {
@@ -53,7 +60,22 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public List<Player> getAll() {
-    return playerResository.findAll();
+    List<Player> players = playerResository.findAll();
+    Map<@NotNull Player, List<Payment>> playerListMap =
+        paymentService.findByPlayersAndDate(Calendar.getInstance().getTime(), players).stream()
+            .collect(groupingBy(Payment::getPlayer));
+
+    return players.stream()
+        .map(
+            p -> {
+              List<Payment> payments =
+                  Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
+              if (!payments.isEmpty()) {
+                p.setPaymentDate(payments.get(0).getDate());
+              }
+              return p;
+            })
+        .collect(toList());
   }
 
   @Override

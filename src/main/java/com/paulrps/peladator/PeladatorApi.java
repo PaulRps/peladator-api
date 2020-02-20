@@ -25,7 +25,7 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
     SpringApplication.run(PeladatorApi.class, args);
   }
 
-  @Profile("default")
+  @Profile("dev")
   @Bean
   CommandLineRunner runner(PlayerService playerService, UserService userService) {
     return args -> {

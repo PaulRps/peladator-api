@@ -90,7 +90,7 @@
 
   <profiles>
     <profile>
-      <id>default</id>
+      <id>dev</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
