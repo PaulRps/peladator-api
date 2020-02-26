@@ -62,7 +62,7 @@ public class PlayerServiceImpl implements PlayerService {
   public List<Player> getAll() {
     List<Player> players = playerResository.findAll();
     Map<@NotNull Player, List<Payment>> playerListMap =
-        paymentService.findByPlayersAndDate(Calendar.getInstance().getTime(), players).stream()
+        paymentService.findByPlayersAndDate(new Date(), players).stream()
             .collect(groupingBy(Payment::getPlayer));
 
     return players.stream()
@@ -80,7 +80,6 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public List<PlayerPositionEnum> getPlayerPositions() {
-    PlayerPositionEnum.class.getEnumConstants();
     return Arrays.asList(PlayerPositionEnum.values());
   }
 

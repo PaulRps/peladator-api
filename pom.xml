@@ -19,6 +19,7 @@
   <properties>
     <java.version>1.8</java.version>
     <!--<start-class>com.paulrps.peladator.PeladatorApi</start-class>-->
+    <mockito.version>2.27.0</mockito.version>
   </properties>
 
   <dependencies>
@@ -75,9 +76,29 @@
       <!-- <version>2.3.3</version> -->
     </dependency>
 
+    <!--    test dependencies-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.6.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -171,5 +192,34 @@
 
   </profiles>
 
+  <build>
+    <plugins>
+      <!--      unit tests-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <!--        <configuration>-->
+        <!--          <includes>-->
+        <!--            <include>Sample.java</include>-->
+        <!--          </includes>-->
+        <!--        </configuration>-->
+      </plugin>
+      <!--      integration-tests-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
