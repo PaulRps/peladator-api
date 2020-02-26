@@ -10,7 +10,7 @@ public interface PlayerService {
 
   Player save(Player player);
 
-  void update(Player player);
+  Player update(Player player);
 
   boolean delete(Long id);
 

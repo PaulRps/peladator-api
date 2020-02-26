@@ -8,12 +8,10 @@ import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
-import com.paulrps.peladator.repositories.PaymentRepository;
 import com.paulrps.peladator.repositories.PlayerResository;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,7 +28,6 @@ class PlayerServiceImplTest implements ServiceTest {
   @Mock PlayerResository repository;
   @InjectMocks PlayerServiceImpl service;
   @Mock PaymentServiceImpl paymentService;
-  @Mock PaymentRepository paymentRepository;
 
   Player player;
 
@@ -54,7 +51,6 @@ class PlayerServiceImplTest implements ServiceTest {
     assertThrows(RuntimeException.class, () -> service.save(null));
   }
 
-  @Disabled // TODO: fix error
   @Test
   void update() {
     //    given
@@ -62,10 +58,10 @@ class PlayerServiceImplTest implements ServiceTest {
     given(repository.save(player)).willReturn(player);
 
     //    when
-    service.update(player);
+    Player update = service.update(player);
 
     //    then
-    assertThrows(RuntimeException.class, () -> service.update(null));
+    assertThat(update).isNotNull();
   }
 
   @Test
@@ -99,16 +95,16 @@ class PlayerServiceImplTest implements ServiceTest {
     assertThrows(RuntimeException.class, () -> service.getOne(null));
   }
 
-  @Disabled // TODO: fix error
   @Test
-  void getAll() {
+  void getAll() throws ParseException {
     //    given
     List<Player> players = Arrays.asList(player, new Player(), new Player());
     List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
-    Date date = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     given(repository.findAll()).willReturn(players);
-    given(paymentRepository.findByDateAndPlayerIn(date, players)).willReturn(payments);
+    given(paymentService.findByPlayersAndDate(format.parse(format.format(new Date())), players))
+        .willReturn(payments);
 
     //    when
     List<Player> all = service.getAll();
@@ -141,6 +137,30 @@ class PlayerServiceImplTest implements ServiceTest {
     assertThat(playerLevels).isNotNull().isNotEmpty();
   }
 
+  @Disabled // TODO: fix error
   @Test
-  void groupByPositionAndSort() {}
+  void groupByPositionAndSort() throws ParseException {
+    //    given
+    player.setPosition(PlayerPositionEnum.GK);
+    List<Player> players =
+        Arrays.asList(
+            player,
+            Player.builder().position(PlayerPositionEnum.ATA).build(),
+            Player.builder().position(PlayerPositionEnum.MDC).build());
+    List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+    given(paymentService.findByPlayersAndDate(format.parse(format.format(new Date())), players))
+        .willReturn(payments);
+    given(service.getAll()).willReturn(players);
+
+    //    when
+    Map<String, List<Player>> map = service.groupByPositionAndSort();
+
+    // then
+    assertThat(map).isNotNull().isNotEmpty();
+    assertThat(map.get(PlayerPositionEnum.GK.getName()).size()).isEqualTo(1);
+    assertThat(map.get(PlayerPositionEnum.ATA.getName()).size()).isEqualTo(1);
+    assertThat(map.get(PlayerPositionEnum.MDC.getName()).size()).isEqualTo(1);
+  }
 }

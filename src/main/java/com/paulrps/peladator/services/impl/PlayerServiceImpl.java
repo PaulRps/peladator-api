@@ -10,6 +10,8 @@ import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
 import com.paulrps.peladator.services.PaymentService;
 import com.paulrps.peladator.services.PlayerService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
@@ -32,8 +34,8 @@ public class PlayerServiceImpl implements PlayerService {
   }
 
   @Override
-  public void update(Player player) {
-    playerResository.save(player);
+  public Player update(Player player) {
+    return playerResository.save(player);
   }
 
   @Override
@@ -61,21 +63,31 @@ public class PlayerServiceImpl implements PlayerService {
   @Override
   public List<Player> getAll() {
     List<Player> players = playerResository.findAll();
-    Map<@NotNull Player, List<Payment>> playerListMap =
-        paymentService.findByPlayersAndDate(new Date(), players).stream()
-            .collect(groupingBy(Payment::getPlayer));
 
-    return players.stream()
-        .map(
-            p -> {
-              List<Payment> payments =
-                  Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
-              if (!payments.isEmpty()) {
-                p.setPaymentDate(payments.get(0).getDate());
-              }
-              return p;
-            })
-        .collect(toList());
+    try {
+      SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+      final Map<@NotNull Player, List<Payment>> playerListMap =
+          paymentService.findByPlayersAndDate(format.parse(format.format(new Date())), players)
+              .stream()
+              .collect(groupingBy(Payment::getPlayer));
+
+      return players.stream()
+          .map(
+              p -> {
+                List<Payment> payments =
+                    Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
+                if (!payments.isEmpty()) {
+                  p.setPaymentDate(payments.get(0).getDate());
+                }
+                return p;
+              })
+          .collect(toList());
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+
+    return new ArrayList<>();
   }
 
   @Override
