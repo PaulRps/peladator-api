@@ -6,6 +6,7 @@ import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +49,8 @@ class PaymentRepositoryIntegrationTest {
 
     //    when
     List<Payment> findByDateAndPlayerIn =
-        repository.findByDateAndPlayerIn(date, Arrays.asList(player));
+        repository.findByDateAndPlayerIn(
+            LocalDate.now().getMonthValue(), Arrays.asList(player.getId()));
 
     //    then
     assertThat(findByDateAndPlayerIn.get(0).getPlayer().getName()).isEqualTo(player.getName());

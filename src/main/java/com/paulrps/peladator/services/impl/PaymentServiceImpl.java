@@ -1,10 +1,11 @@
 package com.paulrps.peladator.services.impl;
 
+import static java.util.stream.Collectors.toList;
+
 import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.repositories.PaymentRepository;
 import com.paulrps.peladator.services.PaymentService;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class PaymentServiceImpl implements PaymentService {
   }
 
   @Override
-  public void update(Payment payment) {
-    save(payment);
+  public Payment update(Payment payment) {
+    return save(payment);
   }
 
   @Override
@@ -58,7 +59,8 @@ public class PaymentServiceImpl implements PaymentService {
   }
 
   @Override
-  public List<Payment> findByPlayersAndDate(Date date, List<Player> players) {
-    return paymentRepository.findByDateAndPlayerIn(date, players);
+  public List<Payment> findByPlayersAndDate(Integer month, List<Player> players) {
+    return paymentRepository.findByDateAndPlayerIn(
+        month, players.stream().map(Player::getId).collect(toList()));
   }
 }

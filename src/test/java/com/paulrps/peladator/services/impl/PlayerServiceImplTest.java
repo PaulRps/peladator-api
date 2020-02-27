@@ -10,10 +10,12 @@ import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,7 +71,6 @@ class PlayerServiceImplTest implements ServiceTest {
     Long id = 1l;
     player.setId(id);
     given(repository.findById(id)).willReturn(Optional.of(player));
-    //    given(repository.findById(null)).willThrow(RuntimeException.class);
 
     //    when
     boolean delete = service.delete(id);
@@ -96,14 +97,13 @@ class PlayerServiceImplTest implements ServiceTest {
   }
 
   @Test
-  void getAll() throws ParseException {
+  void getAll() {
     //    given
     List<Player> players = Arrays.asList(player, new Player(), new Player());
     List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
-    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     given(repository.findAll()).willReturn(players);
-    given(paymentService.findByPlayersAndDate(format.parse(format.format(new Date())), players))
+    given(paymentService.findByPlayersAndDate(LocalDate.now().getMonthValue(), players))
         .willReturn(payments);
 
     //    when
@@ -137,22 +137,23 @@ class PlayerServiceImplTest implements ServiceTest {
     assertThat(playerLevels).isNotNull().isNotEmpty();
   }
 
-  @Disabled // TODO: fix error
+  //  @Disabled // TODO: fix error
   @Test
   void groupByPositionAndSort() throws ParseException {
     //    given
     player.setPosition(PlayerPositionEnum.GK);
+    player.setId(1l);
     List<Player> players =
         Arrays.asList(
             player,
-            Player.builder().position(PlayerPositionEnum.ATA).build(),
-            Player.builder().position(PlayerPositionEnum.MDC).build());
+            Player.builder().id(2l).position(PlayerPositionEnum.ATA).build(),
+            Player.builder().id(3l).position(PlayerPositionEnum.MDC).build());
     List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
-    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
-    given(paymentService.findByPlayersAndDate(format.parse(format.format(new Date())), players))
-        .willReturn(payments);
+    given(repository.findAll()).willReturn(players);
     given(service.getAll()).willReturn(players);
+    given(paymentService.findByPlayersAndDate(LocalDate.now().getMonthValue(), players))
+        .willReturn(payments);
 
     //    when
     Map<String, List<Player>> map = service.groupByPositionAndSort();

@@ -10,8 +10,7 @@ import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
 import com.paulrps.peladator.services.PaymentService;
 import com.paulrps.peladator.services.PlayerService;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
@@ -35,7 +34,7 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public Player update(Player player) {
-    return playerResository.save(player);
+    return save(player);
   }
 
   @Override
@@ -64,30 +63,21 @@ public class PlayerServiceImpl implements PlayerService {
   public List<Player> getAll() {
     List<Player> players = playerResository.findAll();
 
-    try {
-      SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    final Map<@NotNull Player, List<Payment>> playerListMap =
+        paymentService.findByPlayersAndDate(LocalDate.now().getMonthValue(), players).stream()
+            .collect(groupingBy(Payment::getPlayer));
 
-      final Map<@NotNull Player, List<Payment>> playerListMap =
-          paymentService.findByPlayersAndDate(format.parse(format.format(new Date())), players)
-              .stream()
-              .collect(groupingBy(Payment::getPlayer));
-
-      return players.stream()
-          .map(
-              p -> {
-                List<Payment> payments =
-                    Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
-                if (!payments.isEmpty()) {
-                  p.setPaymentDate(payments.get(0).getDate());
-                }
-                return p;
-              })
-          .collect(toList());
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-
-    return new ArrayList<>();
+    return players.stream()
+        .map(
+            p -> {
+              List<Payment> payments =
+                  Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
+              if (!payments.isEmpty()) {
+                p.setPaymentDate(payments.get(0).getDate());
+              }
+              return p;
+            })
+        .collect(toList());
   }
 
   @Override

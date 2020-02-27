@@ -2,14 +2,13 @@ package com.paulrps.peladator.services;
 
 import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
-import java.util.Date;
 import java.util.List;
 
 public interface PaymentService {
 
   Payment save(Payment payment);
 
-  void update(Payment payment);
+  Payment update(Payment payment);
 
   boolean delete(Long id);
 
@@ -17,5 +16,5 @@ public interface PaymentService {
 
   Payment getOne(Long id);
 
-  List<Payment> findByPlayersAndDate(Date date, List<Player> players);
+  List<Payment> findByPlayersAndDate(Integer month, List<Player> players);
 }

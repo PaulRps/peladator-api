@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
+import com.paulrps.peladator.domain.dto.UserFormDto;
 import com.paulrps.peladator.domain.entities.User;
+import com.paulrps.peladator.domain.enums.RoleEnum;
 import com.paulrps.peladator.repositories.UserRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +64,15 @@ class UserServiceImplTest implements ServiceTest {
   }
 
   @Test
-  void getFormData() {}
+  void getFormData() {
+
+    //    when
+    UserFormDto formData = service.getFormData();
+
+    //    then
+    assertThat(formData).isNotNull();
+    assertThat(formData.getRoles()).isNotEmpty().hasSize(RoleEnum.values().length);
+  }
 
   @Test
   void getAll() {
@@ -109,7 +119,8 @@ class UserServiceImplTest implements ServiceTest {
     boolean delete = service.delete(id);
 
     //    then
-    assertThat(delete).isEqualTo(true);
+    assertThat(delete).isTrue();
+    assertThat(service.delete(-1l)).isFalse();
     assertThrows(RuntimeException.class, () -> service.delete(null));
   }
 }
