@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ActiveProfiles("test")
-class UserRepositoryIntegrationTest {
+class UserRepositoryIT {
   @Autowired private TestEntityManager entityManager;
 
   @Autowired private UserRepository repository;

@@ -6,6 +6,7 @@ import com.paulrps.peladator.services.TeamService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(
@@ -17,11 +18,13 @@ public class TeamController {
 
   @Autowired TeamService teamService;
 
+  @PreAuthorize("permitAll()")
   @GetMapping("load-teams-page")
   ResponseEntity<SortTeamDto> loadTeamsPage() {
     return ResponseEntity.ok(teamService.loadTeamsPage());
   }
 
+  @PreAuthorize("permitAll()")
   @PostMapping("sort-teams")
   ResponseEntity<List<TeamDto>> sortTeams(@RequestBody SortTeamDto dto) {
     return ResponseEntity.ok(teamService.sort(dto));
