@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TeamService {
 
-  SortTeamDto loadTeamsPage();
+  SortTeamDto loadPage();
 
   List<TeamDto> sort(SortTeamDto dto);
 }

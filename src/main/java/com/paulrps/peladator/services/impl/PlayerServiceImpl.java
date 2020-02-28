@@ -3,6 +3,7 @@ package com.paulrps.peladator.services.impl;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
@@ -105,5 +106,13 @@ public class PlayerServiceImpl implements PlayerService {
               positionMap.get(p.getPosition().getName()).add(p);
             });
     return positionMap;
+  }
+
+  @Override
+  public PlayerFormDto formData() {
+    return PlayerFormDto.builder()
+        .positions(getPlayerPositions())
+        .skillLevels(getPlayerLevels())
+        .build();
   }
 }

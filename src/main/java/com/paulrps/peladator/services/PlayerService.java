@@ -1,5 +1,6 @@
 package com.paulrps.peladator.services;
 
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
@@ -23,4 +24,6 @@ public interface PlayerService {
   List<PlayerLevelEnum> getPlayerLevels();
 
   Map<String, List<Player>> groupByPositionAndSort();
+
+  PlayerFormDto formData();
 }

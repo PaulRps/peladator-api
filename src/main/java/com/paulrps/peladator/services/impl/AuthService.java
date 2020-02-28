@@ -1,4 +1,4 @@
-package com.paulrps.peladator.config.security;
+package com.paulrps.peladator.services.impl;
 
 import com.paulrps.peladator.domain.entities.User;
 import com.paulrps.peladator.services.UserService;

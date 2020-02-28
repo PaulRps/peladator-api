@@ -37,7 +37,7 @@ class TeamServiceImplTest {
     given(playerService.groupByPositionAndSort()).willReturn(map);
 
     //    when
-    SortTeamDto sortTeamDto = service.loadTeamsPage();
+    SortTeamDto sortTeamDto = service.loadPage();
     //    then
     assertThat(sortTeamDto).isNotNull();
     assertThat(sortTeamDto.getSortStrategies())

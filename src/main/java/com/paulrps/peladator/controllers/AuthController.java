@@ -1,9 +1,9 @@
 package com.paulrps.peladator.controllers;
 
-import com.paulrps.peladator.config.security.TokenService;
 import com.paulrps.peladator.domain.dto.LoginFormDto;
 import com.paulrps.peladator.domain.dto.TokenDto;
 import com.paulrps.peladator.domain.entities.User;
+import com.paulrps.peladator.services.TokenService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +38,7 @@ public class AuthController {
           (TokenDto.builder()
               .id(user.getId())
               .value(token)
-              .type(TokenService.TOKEN_TYPE)
+              .type(tokenService.getTokenType())
               .role(user.getRole())
               .build()));
 

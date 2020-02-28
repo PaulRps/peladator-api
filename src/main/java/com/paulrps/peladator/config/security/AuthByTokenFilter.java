@@ -1,6 +1,7 @@
 package com.paulrps.peladator.config.security;
 
 import com.paulrps.peladator.domain.entities.User;
+import com.paulrps.peladator.services.TokenService;
 import com.paulrps.peladator.services.UserService;
 import java.io.IOException;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class AuthByTokenFilter extends OncePerRequestFilter {
 
     String token = request.getHeader("Authorization");
 
-    if (token == null || token.isEmpty() || !token.startsWith(TokenService.TOKEN_TYPE)) {
+    if (token == null || token.isEmpty() || !token.startsWith(tokenService.getTokenType())) {
       return null;
     }
 

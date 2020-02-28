@@ -18,11 +18,7 @@ public class PlayerController {
   @PreAuthorize("permitAll()")
   @GetMapping("form-data")
   ResponseEntity<PlayerFormDto> getFormData() {
-    return ResponseEntity.ok(
-        PlayerFormDto.builder()
-            .positions(playerService.getPlayerPositions())
-            .skillLevels(playerService.getPlayerLevels())
-            .build());
+    return ResponseEntity.ok(playerService.formData());
   }
 
   @PreAuthorize("permitAll()")

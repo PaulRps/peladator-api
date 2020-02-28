@@ -19,7 +19,7 @@ public class TeamServiceImpl implements TeamService {
   @Autowired PlayerService playerService;
 
   @Override
-  public SortTeamDto loadTeamsPage() {
+  public SortTeamDto loadPage() {
     return SortTeamDto.builder()
         .sortStrategies(
             Stream.of(SortTeamStrategyEnum.values())

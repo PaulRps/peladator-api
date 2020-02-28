@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
@@ -163,5 +164,25 @@ class PlayerServiceImplTest implements ServiceTest {
     assertThat(map.get(PlayerPositionEnum.GK.getName()).size()).isEqualTo(1);
     assertThat(map.get(PlayerPositionEnum.ATA.getName()).size()).isEqualTo(1);
     assertThat(map.get(PlayerPositionEnum.MDC.getName()).size()).isEqualTo(1);
+  }
+
+  @Test
+  void formData() {
+
+    //    given
+
+    //    when
+    PlayerFormDto playerFormDto = service.formData();
+
+    //    then
+    assertThat(playerFormDto).isNotNull();
+    assertThat(playerFormDto.getPositions())
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(PlayerPositionEnum.values().length);
+    assertThat(playerFormDto.getSkillLevels())
+        .isNotNull()
+        .isNotEmpty()
+        .hasSize(PlayerLevelEnum.values().length);
   }
 }

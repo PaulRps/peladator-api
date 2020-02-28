@@ -19,13 +19,13 @@ public class TeamController {
   @Autowired TeamService teamService;
 
   @PreAuthorize("permitAll()")
-  @GetMapping("load-teams-page")
-  ResponseEntity<SortTeamDto> loadTeamsPage() {
-    return ResponseEntity.ok(teamService.loadTeamsPage());
+  @GetMapping("load-page")
+  ResponseEntity<SortTeamDto> loadPage() {
+    return ResponseEntity.ok(teamService.loadPage());
   }
 
   @PreAuthorize("permitAll()")
-  @PostMapping("sort-teams")
+  @PostMapping("sort")
   ResponseEntity<List<TeamDto>> sortTeams(@RequestBody SortTeamDto dto) {
     return ResponseEntity.ok(teamService.sort(dto));
   }

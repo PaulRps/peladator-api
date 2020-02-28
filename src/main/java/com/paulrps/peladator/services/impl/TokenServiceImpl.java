@@ -1,6 +1,7 @@
-package com.paulrps.peladator.config.security;
+package com.paulrps.peladator.services.impl;
 
 import com.paulrps.peladator.domain.entities.User;
+import com.paulrps.peladator.services.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -11,15 +12,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TokenService {
-
-  public static final String TOKEN_TYPE = "Bearer";
+public class TokenServiceImpl implements TokenService {
 
   @Value("${api.jwt.expiration}")
   private Long expiration;
 
   @Value("${api.jwt.secret}")
   private String secret;
+
+  @Value("${api.jwt.token-type}")
+  private String tokenType;
 
   public String createToken(Authentication auth) {
     User user = (User) auth.getPrincipal();
@@ -50,5 +52,9 @@ public class TokenService {
   public Long getUserId(String token) {
     Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     return Long.valueOf(body.getSubject());
+  }
+
+  public String getTokenType() {
+    return tokenType;
   }
 }

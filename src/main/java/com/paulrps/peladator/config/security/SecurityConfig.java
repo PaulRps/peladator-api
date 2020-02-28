@@ -1,6 +1,8 @@
 package com.paulrps.peladator.config.security;
 
+import com.paulrps.peladator.services.TokenService;
 import com.paulrps.peladator.services.UserService;
+import com.paulrps.peladator.services.impl.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
