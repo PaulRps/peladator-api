@@ -6,23 +6,21 @@ api:
     token-type: Bearer
 spring:
   profiles:
-    active: dev
-  #  datasource:
-  #?allowPublicKeyRetrieval=true&useSSL=false
-  #    url: jdbc:mysql://localhost:3306/peladator
-  #    username: peladator
-  #    password: peladator
+    active: heroku
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
+    generate-ddl: true
   jackson:
     locale: pt-BR
     time-zone: America/Sao_Paulo
+
 server:
   port: ${PORT:5000}
   servlet:
     context-path: /api
-  h2:
-    console:
-      enabled: true

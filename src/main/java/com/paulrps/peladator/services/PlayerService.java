@@ -1,16 +1,29 @@
 package com.paulrps.peladator.services;
 
-import java.util.List;
-
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Player;
+import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
+import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
+import java.util.List;
+import java.util.Map;
 
 public interface PlayerService {
 
-	public Player addPlayer(Player player);
-	
-	public boolean deletePlayer(Long id);
+  Player save(Player player);
 
-	public List<Player> getAllPlayers();
-	
-	public Player getOnePlayer(Long id);
+  Player update(Player player);
+
+  boolean delete(Long id);
+
+  Player getOne(Long id);
+
+  List<Player> getAll();
+
+  List<PlayerPositionEnum> getPlayerPositions();
+
+  List<PlayerLevelEnum> getPlayerLevels();
+
+  Map<String, List<Player>> groupByPositionAndSort();
+
+  PlayerFormDto formData();
 }

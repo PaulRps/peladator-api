@@ -1,41 +1,40 @@
 package com.paulrps.peladator.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PlayerPositionEnum {
+public enum PlayerPositionEnum implements EnumInterface {
+  GK(1, "Goleiro", "GL"),
+  DF(2, "Zagueiro", "ZAG"),
+  LTE(3, "Lateral Esquerdo", "LTE"),
+  LTR(4, "Lateral Direito", "LTD"),
+  VOL(5, "Volante", "VOL"),
+  MDC(6, "Meio de Campo", "MDC"),
+  ATA(7, "Atacante", "ATA");
 
-	GK(1l, "Goleiro"),
-	DF(2l, "Zagueiro"),
-	LTE(3l, "Lateral Esquerdo"),
-	LTR(4l, "Lateral Direito"),
-	VOL(5l, "Volante"),
-	MDC(6l, "Meio de Campo"),
-	ATA(7l, "Atacante");
-	
-	private Long id;
-	
-	private String name;
-	
-	public static PlayerPositionEnum getOneById(Long id) {
-		
-		for (PlayerPositionEnum p : PlayerPositionEnum.values()){
-			if (p.getId().equals(id))
-				return p;
-		}
-		
-		return null;
-	}
-	
-	public static PlayerPositionEnum getOneByName(String name) {
-		
-		for (PlayerPositionEnum p : PlayerPositionEnum.values()){
-			if (p.getName().equals(name))
-				return p;
-		}
-		
-		return null;
-	}
+  private Integer id;
+  private String name;
+  private String shortName;
+
+  @JsonCreator
+  public static PlayerPositionEnum forValues(
+      @JsonProperty("id") Integer id, @JsonProperty("name") String name) {
+    return (PlayerPositionEnum) PlayerPositionEnum.ATA.getOne(id, name);
+  }
+
+  @Override
+  public List<EnumInterface> getValues() {
+    return Arrays.asList(PlayerPositionEnum.values());
+  }
+
+  @Override
+  public String toString() {
+    return "PlayerPositionEnum{" + "id=" + id + ", name='" + name + '\'' + '}';
+  }
 }
