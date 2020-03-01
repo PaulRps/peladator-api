@@ -199,11 +199,24 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M4</version>
-        <!--        <configuration>-->
-        <!--          <includes>-->
-        <!--            <include>Sample.java</include>-->
-        <!--          </includes>-->
-        <!--        </configuration>-->
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+        <executions>
+          <execution>
+            <id>unit-tests</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <skipTests>false</skipTests>
+              <includes>
+                <include>**/*Test.java</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <!--      integration-tests-->
       <plugin>
@@ -216,6 +229,13 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
+            <configuration>
+              <skipTests>false</skipTests>
+              <includes>
+                <include>**/*IT.*</include>
+<!--                <include>**/*Tests.*</include>-->
+              </includes>
+            </configuration>
           </execution>
         </executions>
       </plugin>

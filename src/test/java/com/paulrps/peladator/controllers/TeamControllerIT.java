@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 // @WebMvcTest(TeamController.class)
-class TeamControllerTest {
+class TeamControllerIT {
 
   @Autowired private MockMvc mvc;
   @MockBean private TeamService service;
