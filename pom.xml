@@ -22,7 +22,8 @@
     <mockito.version>2.27.0</mockito.version>
 
     <developer.name>PaulRps</developer.name>
-    <developer.url>http://www.github.com/paulrps</developer.url>
+    <developer.github>http://www.github.com/paulrps</developer.github>
+    <developer.linkedin>http://www.linkedin.com/in/paulo-silva-a981a9a7</developer.linkedin>
   </properties>
 
   <dependencies>
@@ -184,7 +185,8 @@
                 <configuration>
                   <additionalProperties>
                     <developer.name>${developer.name}</developer.name>
-                    <developer.url>${developer.url}</developer.url>
+                    <developer.github>${developer.github}</developer.github>
+                    <developer.linkedin>${developer.linkedin}</developer.linkedin>
                   </additionalProperties>
                 </configuration>
               </execution>
@@ -211,7 +213,8 @@
                 <configuration>
                   <additionalProperties>
                     <developer.name>${developer.name}</developer.name>
-                    <developer.url>${developer.url}</developer.url>
+                    <developer.github>${developer.github}</developer.github>
+                    <developer.linkedin>${developer.linkedin}</developer.linkedin>
                   </additionalProperties>
                 </configuration>
               </execution>

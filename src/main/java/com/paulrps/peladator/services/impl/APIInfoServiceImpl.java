@@ -20,7 +20,8 @@ public class APIInfoServiceImpl implements APIInfoService {
         .artifact(buildProperties.getArtifact())
         .version(buildProperties.getVersion())
         .dtBuild(Date.from(buildProperties.getTime()))
-        .developerUrl(buildProperties.get("developer.url"))
+        .developerGitHub(buildProperties.get("developer.github"))
+        .developerLinkedin(buildProperties.get("developer.linkedin"))
         .developerName(buildProperties.get("developer.name"))
         .build();
   }

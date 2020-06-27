@@ -22,7 +22,9 @@ public class BuildInfoDto {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private Date dtBuild;
 
-  private String developerUrl;
+  private String developerGitHub;
 
   private String developerName;
+
+  private String developerLinkedin;
 }
