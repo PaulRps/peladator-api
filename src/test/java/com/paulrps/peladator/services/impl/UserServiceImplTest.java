@@ -1,9 +1,17 @@
 package com.paulrps.peladator.services.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+
 import com.paulrps.peladator.domain.dto.UserFormDto;
 import com.paulrps.peladator.domain.entities.User;
 import com.paulrps.peladator.domain.enums.RoleEnum;
 import com.paulrps.peladator.repositories.UserRepository;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -11,15 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -77,7 +76,7 @@ class UserServiceImplTest implements ServiceTest {
   }
 
   @Test
-  void getAll() {
+  void findAll() {
     //    given
     List<User> users = Arrays.asList(user, new User(), new User());
     given(repository.findAll()).willReturn(users);

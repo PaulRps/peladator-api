@@ -1,17 +1,20 @@
 package com.paulrps.peladator.services;
 
 import com.paulrps.peladator.domain.entities.Payment;
-
+import com.paulrps.peladator.domain.entities.Player;
 import java.util.List;
 
 public interface PaymentService {
 
-    public Payment addPayment(Payment payment);
+  Payment save(Payment payment);
 
-    public boolean deletePayment(Long id);
+  Payment update(Payment payment);
 
-    public List<Payment> getAllPayments();
+  boolean delete(Long id);
 
-    public Payment getOnePayment(Long id);
+  List<Payment> findAll();
 
+  Payment find(Long id);
+
+  List<Payment> findAll(Integer month, List<Player> players);
 }

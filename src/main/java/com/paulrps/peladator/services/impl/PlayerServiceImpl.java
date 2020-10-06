@@ -1,85 +1,118 @@
 package com.paulrps.peladator.services.impl;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
+import com.paulrps.peladator.domain.dto.PlayerFormDto;
+import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
+import com.paulrps.peladator.services.PaymentService;
 import com.paulrps.peladator.services.PlayerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
+import javax.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
 
-    @Autowired
-    PlayerResository playerResository;
+  @Autowired PlayerResository playerResository;
+  @Autowired PaymentService paymentService;
 
-    @Override
-    public Player save(Player player) {
-        if (!Optional.ofNullable(player).isPresent()) {
-            throw new RuntimeException("");//TODO: define structure of messages
-        }
-        return playerResository.save(player);
+  @Override
+  public Player save(Player player) {
+    if (!Optional.ofNullable(player).isPresent()) {
+      throw new RuntimeException(""); // TODO: define structure of messages
     }
 
-    @Override
-    public void update(Player player) {
-        playerResository.save(player);
+    return playerResository.save(player);
+  }
+
+  @Override
+  public Player update(Player player) {
+    return save(player);
+  }
+
+  @Override
+  public boolean delete(Long id) {
+    if (!Optional.ofNullable(id).isPresent()) {
+      throw new RuntimeException("");
     }
 
-    @Override
-    public boolean delete(Long id) {
-        if (!Optional.ofNullable(id).isPresent()) {
-            throw new RuntimeException("");
-        }
-
-        Optional<Player> player = playerResository.findById(id);
-        if (player.isPresent()) {
-            playerResository.delete(player.get());
-            return true;
-        }
-        return false;
+    Optional<Player> player = playerResository.findById(id);
+    if (player.isPresent()) {
+      playerResository.delete(player.get());
+      return true;
     }
+    return false;
+  }
 
-    @Override
-    public Player getOne(Long id) {
-        if (!Optional.ofNullable(id).isPresent()) {
-            throw new RuntimeException("");
-        }
-        return playerResository.findById(id).orElse(null);
+  @Override
+  public Player find(Long id) {
+    if (!Optional.ofNullable(id).isPresent()) {
+      throw new RuntimeException("");
     }
+    return playerResository.findById(id).orElse(null);
+  }
 
-    @Override
-    public List<Player> getAll() {
-        return playerResository.findAll();
-    }
+  @Override
+  public List<Player> findAll() {
+    List<Player> players = playerResository.findAll();
 
-    @Override
-    public List<PlayerPositionEnum> getPlayerPositions() {
-        PlayerPositionEnum.class.getEnumConstants();
-        return Arrays.asList(PlayerPositionEnum.values());
-    }
+    final Map<@NotNull Player, List<Payment>> playerListMap =
+        paymentService.findAll(LocalDate.now().getMonthValue(), players).stream()
+            .collect(groupingBy(Payment::getPlayer));
 
-    @Override
-    public List<PlayerLevelEnum> getPlayerLevels() {
-        return Arrays.asList(PlayerLevelEnum.values());
-    }
+    return players.stream()
+        .map(
+            p -> {
+              List<Payment> payments =
+                  Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
+              if (!payments.isEmpty()) {
+                p.setPaymentDate(payments.get(0).getDate());
+              }
+              return p;
+            })
+        .collect(toList());
+  }
 
-    @Override
-    public Map<String, List<Player>> groupByPositionAndSort() {
-        Map<String, List<Player>> positionMap = new LinkedHashMap<>();
-        Stream.of(PlayerPositionEnum.values())
-            .sorted(Comparator.comparingInt(PlayerPositionEnum::getId))
-            .forEach(p -> {
-                positionMap.put(p.getName(), new ArrayList<>());
+  @Override
+  public List<PlayerPositionEnum> getPlayerPositions() {
+    return Arrays.asList(PlayerPositionEnum.values());
+  }
+
+  @Override
+  public List<PlayerLevelEnum> getPlayerLevels() {
+    return Arrays.asList(PlayerLevelEnum.values());
+  }
+
+  @Override
+  public Map<String, List<Player>> groupByPositionAndSort() {
+    Map<String, List<Player>> positionMap = new LinkedHashMap<>();
+    Stream.of(PlayerPositionEnum.values())
+        .sorted(Comparator.comparingInt(PlayerPositionEnum::getId))
+        .forEach(
+            p -> {
+              positionMap.put(p.getName(), new ArrayList<>());
             });
-        getAll().stream()
-            .forEach(p -> {
-                positionMap.get(p.getPosition().getName()).add(p);
+    findAll().stream()
+        .forEach(
+            p -> {
+              positionMap.get(p.getPosition().getName()).add(p);
             });
-        return positionMap;
-    }
+    return positionMap;
+  }
+
+  @Override
+  public PlayerFormDto formData() {
+    return PlayerFormDto.builder()
+        .positions(getPlayerPositions())
+        .skillLevels(getPlayerLevels())
+        .build();
+  }
 }

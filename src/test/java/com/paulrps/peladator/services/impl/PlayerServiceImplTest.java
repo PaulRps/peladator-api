@@ -1,11 +1,22 @@
 package com.paulrps.peladator.services.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+
 import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -13,18 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -105,11 +104,10 @@ class PlayerServiceImplTest implements ServiceTest {
     List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
 
     given(repository.findAll()).willReturn(players);
-    given(paymentService.findAll(LocalDate.now().getMonthValue(), players))
-        .willReturn(payments);
+    given(paymentService.findAll(LocalDate.now().getMonthValue(), players)).willReturn(payments);
 
     //    when
-    List<Player> all = service.getAll();
+    List<Player> all = service.findAll();
 
     //    then
     assertThat(all).isNotNull().isNotEmpty();
@@ -153,9 +151,8 @@ class PlayerServiceImplTest implements ServiceTest {
     List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
 
     given(repository.findAll()).willReturn(players);
-    given(service.getAll()).willReturn(players);
-    given(paymentService.findAll(LocalDate.now().getMonthValue(), players))
-        .willReturn(payments);
+    given(service.findAll()).willReturn(players);
+    given(paymentService.findAll(LocalDate.now().getMonthValue(), players)).willReturn(payments);
 
     //    when
     Map<String, List<Player>> map = service.groupByPositionAndSort();

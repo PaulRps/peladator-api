@@ -1,18 +1,16 @@
 package com.paulrps.peladator.domain.dto;
 
 import com.paulrps.peladator.domain.enums.RoleEnum;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TokenDto {
-  private String value;
-  private String type;
-  private Long id;
-  private RoleEnum role;
+public class UserFormDto {
+  private List<RoleEnum> roles;
 }

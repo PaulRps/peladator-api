@@ -1,48 +1,52 @@
 package com.paulrps.peladator.controllers;
 
+import com.paulrps.peladator.domain.dto.PaymentFormData;
 import com.paulrps.peladator.domain.entities.Payment;
-import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.services.PaymentService;
+import com.paulrps.peladator.services.PlayerService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("payment")
 public class PaymentController {
 
-    @Autowired
-    PaymentService paymentService;
+  @Autowired PaymentService paymentService;
+  @Autowired PlayerService playerService;
 
-    @GetMapping("/{id}")
-    Payment getPlayer(@PathVariable(value = "id") Long id) {
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @GetMapping("form-data")
+  ResponseEntity<PaymentFormData> getFormData() {
+    return ResponseEntity.ok(PaymentFormData.builder().players(playerService.findAll()).build());
+  }
 
-        Player p = new Player();
-        p.setId(1l);
-        p.setName("Joao");
-        p.setAge(30);
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @GetMapping
+  ResponseEntity<List<Payment>> getAll() {
+    return ResponseEntity.ok(paymentService.findAll());
+  }
 
-        Payment py = new Payment();
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PostMapping
+  ResponseEntity<List<Payment>> save(@RequestBody Payment payment) {
+    paymentService.save(payment);
+    return ResponseEntity.ok(paymentService.findAll());
+  }
 
-        py.setDate(new Date());
-//		py.setId(id);
-        py.setPlayer(p);
-        py.setValue(10.0);
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping
+  ResponseEntity<List<Payment>> update(@RequestBody Payment payment) {
+    paymentService.update(payment);
+    return ResponseEntity.ok(paymentService.findAll());
+  }
 
-        Payment addPayment = paymentService.addPayment(py);
-
-        return addPayment;
-    }
-
-    @GetMapping
-    List<Payment> getAllPlayers() {
-        return paymentService.getAllPayments();
-    }
-
-    @PostMapping
-    Payment addPlayer(@RequestBody Payment payment) {
-        return paymentService.addPayment(payment);
-    }
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @DeleteMapping("{id}")
+  ResponseEntity<List<Payment>> update(@PathVariable Long id) {
+    paymentService.delete(id);
+    return ResponseEntity.ok(paymentService.findAll());
+  }
 }

@@ -6,10 +6,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Data
 public class LoginFormDto {
 
-    private String userName;
-    private String password;
+  private String userName;
+  private String password;
 
-    public UsernamePasswordAuthenticationToken convert() {
-        return new UsernamePasswordAuthenticationToken(this.userName, this.password);
-    }
+  public UsernamePasswordAuthenticationToken convert() {
+    return new UsernamePasswordAuthenticationToken(this.userName, this.password);
+  }
 }

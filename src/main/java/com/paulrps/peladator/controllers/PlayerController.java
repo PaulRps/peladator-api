@@ -3,52 +3,48 @@ package com.paulrps.peladator.controllers;
 import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.services.PlayerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("player")
 public class PlayerController {
 
-    @Autowired
-    PlayerService playerService;
+  @Autowired PlayerService playerService;
 
-    @GetMapping("{id}")
-    Player getPlayer(@PathVariable(value = "id") Long id) {
-        return playerService.getOne(id);
-    }
+  @PreAuthorize("permitAll()")
+  @GetMapping("form-data")
+  ResponseEntity<PlayerFormDto> getFormData() {
+    return ResponseEntity.ok(playerService.formData());
+  }
 
-    @GetMapping("form-data")
-    PlayerFormDto getFormData() {
-        return PlayerFormDto.builder()
-            .positions(playerService.getPlayerPositions())
-            .skillLevels(playerService.getPlayerLevels())
-            .build();
-    }
+  @PreAuthorize("permitAll()")
+  @GetMapping
+  ResponseEntity<List<Player>> getAllPlayers() {
+    return ResponseEntity.ok(playerService.findAll());
+  }
 
-    @GetMapping
-    List<Player> getAllPlayers() {
-        return playerService.getAll();
-    }
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PostMapping
+  ResponseEntity<List<Player>> save(@RequestBody Player player) {
+    playerService.save(player);
+    return ResponseEntity.ok(playerService.findAll());
+  }
 
-    @PostMapping
-    List<Player> save(@RequestBody Player player) {
-        playerService.save(player);
-        return playerService.getAll();
-    }
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping
+  ResponseEntity<List<Player>> update(@RequestBody Player player) {
+    playerService.update(player);
+    return ResponseEntity.ok(playerService.findAll());
+  }
 
-    @PutMapping
-    List<Player> update(@RequestBody Player player) {
-        playerService.update(player);
-        return playerService.getAll();
-    }
-
-    @DeleteMapping("{id}")
-    List<Player> delete(@PathVariable(value = "id") Long id) {
-        playerService.delete(id);//TODO: validar delecao
-        return playerService.getAll();
-    }
-
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @DeleteMapping("{id}")
+  ResponseEntity<List<Player>> delete(@PathVariable(value = "id") Long id) {
+    playerService.delete(id); // TODO: validar delecao
+    return ResponseEntity.ok(playerService.findAll());
+  }
 }
