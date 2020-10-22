@@ -1,8 +1,9 @@
 package com.paulrps.peladator.services.impl;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
 
+import com.paulrps.peladator.config.exceptions.ApiException;
+import com.paulrps.peladator.config.exceptions.ApiMessageEnum;
 import com.paulrps.peladator.domain.dto.PlayerFormDto;
 import com.paulrps.peladator.domain.entities.Payment;
 import com.paulrps.peladator.domain.entities.Player;
@@ -15,70 +16,144 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class PlayerServiceImpl implements PlayerService {
 
-  @Autowired PlayerResository playerResository;
-  @Autowired PaymentService paymentService;
+  private static PlayerResository playerResository;
+  private static PaymentService paymentService;
+
+  @Autowired
+  PlayerServiceImpl(final PlayerResository playerResository, final PaymentService paymentService) {
+    PlayerServiceImpl.playerResository = playerResository;
+    PlayerServiceImpl.paymentService = paymentService;
+  }
 
   @Override
   public Player save(Player player) {
-    if (!Optional.ofNullable(player).isPresent()) {
-      throw new RuntimeException(""); // TODO: define structure of messages
-    }
 
-    return playerResository.save(player);
+    Optional.ofNullable(player)
+        .orElseThrow(
+            () -> {
+              log.error("Parameter player is null");
+              return new ApiException(ApiMessageEnum.ERROR_PARAMETER_NOT_PRESENT, "player");
+            });
+
+    try {
+
+      log.debug("creating player {}", player.toString());
+      return playerResository.save(player);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      log.error(player.toString());
+      throw new ApiException(ApiMessageEnum.ERROR_ON_SAVE_ENTITY, e, player.toString());
+    }
   }
 
   @Override
-  public Player update(Player player) {
-    return save(player);
+  public void update(Player player) {
+
+    Optional.ofNullable(player)
+        .orElseThrow(
+            () -> {
+              log.error("Parameter player is null");
+              return new ApiException(ApiMessageEnum.ERROR_PARAMETER_NOT_PRESENT, "player");
+            });
+
+    Optional.ofNullable(player.getId())
+        .orElseThrow(
+            () -> {
+              log.error("PLAYER_ID parameter is null");
+              return new ApiException(ApiMessageEnum.ERROR_PARAMETER_NOT_PRESENT, "PLAYER_ID");
+            });
+
+    try {
+      log.debug("updating player {}}", player.toString());
+      save(player);
+      log.debug("updated player");
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ApiException(ApiMessageEnum.ERROR_ON_SAVE_ENTITY, e, player.toString());
+    }
   }
 
   @Override
-  public boolean delete(Long id) {
-    if (!Optional.ofNullable(id).isPresent()) {
-      throw new RuntimeException("");
+  public void delete(Long id) {
+
+    Optional.ofNullable(id)
+        .orElseThrow(
+            () -> {
+              log.error("PLAYER_ID parameter is null");
+              return new ApiException(ApiMessageEnum.ERROR_PARAMETER_NOT_PRESENT, "PLAYER_ID");
+            });
+
+    if (!playerResository.existsById(id)) {
+      log.error("Player[id={}] do not exist", id);
+      throw new ApiException(
+          ApiMessageEnum.ERROR_RESOURCE_NOT_FOUND, String.format("Player[id=%d]", id));
     }
 
-    Optional<Player> player = playerResository.findById(id);
-    if (player.isPresent()) {
-      playerResository.delete(player.get());
-      return true;
+    try {
+      log.debug("deleting player [id={}]", id);
+      playerResository.deleteById(id);
+      log.debug("player deleted");
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ApiException(
+          ApiMessageEnum.ERROR_ON_DELETE_ENTITY, e, String.format("Player[id=%d]", id));
     }
-    return false;
   }
 
   @Override
   public Player find(Long id) {
-    if (!Optional.ofNullable(id).isPresent()) {
-      throw new RuntimeException("");
+    Optional.ofNullable(id)
+        .orElseThrow(
+            () ->
+                new ApiException(ApiMessageEnum.ERROR_PARAMETER_NOT_PRESENT, "PLAYER_ID is null"));
+
+    try {
+      log.debug("quering Player[id={}]", id);
+      return playerResository.findById(id).orElse(null);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ApiException(
+          ApiMessageEnum.ERROR_RESOURCE_NOT_FOUND, e, String.format("Player[id=%d]", id));
     }
-    return playerResository.findById(id).orElse(null);
   }
 
   @Override
   public List<Player> findAll() {
-    List<Player> players = playerResository.findAll();
+    try {
+      log.debug("querying all players");
 
-    final Map<@NotNull Player, List<Payment>> playerListMap =
-        paymentService.findAll(LocalDate.now().getMonthValue(), players).stream()
-            .collect(groupingBy(Payment::getPlayer));
+      List<Player> players = playerResository.findAll();
 
-    return players.stream()
-        .map(
-            p -> {
-              List<Payment> payments =
-                  Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
-              if (!payments.isEmpty()) {
-                p.setPaymentDate(payments.get(0).getDate());
-              }
-              return p;
-            })
-        .collect(toList());
+      log.debug("queried {} players", players.size());
+
+      log.debug("querying player's payment");
+      final Map<@NotNull Player, List<Payment>> playerListMap =
+          paymentService.findAll(LocalDate.now().getMonthValue(), players).stream()
+              .collect(groupingBy(Payment::getPlayer));
+
+      log.debug("setting player's payments");
+      players.stream()
+          .forEach(
+              p -> {
+                List<Payment> payments =
+                    Optional.ofNullable(playerListMap.get(p)).orElse(new ArrayList<>());
+                if (!payments.isEmpty()) {
+                  p.setPaymentDate(payments.get(0).getDate());
+                }
+              });
+      return players;
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ApiException(ApiMessageEnum.ERROR_INTERNAL_SERVER, e, "getAll players");
+    }
   }
 
   @Override
@@ -93,26 +168,31 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public Map<String, List<Player>> groupByPositionAndSort() {
-    Map<String, List<Player>> positionMap = new LinkedHashMap<>();
-    Stream.of(PlayerPositionEnum.values())
-        .sorted(Comparator.comparingInt(PlayerPositionEnum::getId))
-        .forEach(
-            p -> {
-              positionMap.put(p.getName(), new ArrayList<>());
-            });
-    findAll().stream()
-        .forEach(
-            p -> {
-              positionMap.get(p.getPosition().getName()).add(p);
-            });
-    return positionMap;
+    try {
+      log.debug("grouping players by position");
+      Map<String, List<Player>> positionMap = new LinkedHashMap<>();
+      Stream.of(PlayerPositionEnum.values())
+          .sorted(Comparator.comparingInt(PlayerPositionEnum::getId))
+          .forEach(p -> positionMap.put(p.getName(), new ArrayList<>()));
+      findAll().forEach(p -> positionMap.get(p.getPosition().getName()).add(p));
+      log.debug("{} }players were grouped", positionMap.size());
+      return positionMap;
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ApiException(ApiMessageEnum.ERROR_INTERNAL_SERVER, e, "group players by position");
+    }
   }
 
   @Override
   public PlayerFormDto formData() {
-    return PlayerFormDto.builder()
-        .positions(getPlayerPositions())
-        .skillLevels(getPlayerLevels())
-        .build();
+    try {
+      return PlayerFormDto.builder()
+          .positions(getPlayerPositions())
+          .skillLevels(getPlayerLevels())
+          .build();
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ApiException(ApiMessageEnum.ERROR_INTERNAL_SERVER, e, "get player form data");
+    }
   }
 }

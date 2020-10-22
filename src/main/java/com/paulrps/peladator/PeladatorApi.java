@@ -30,11 +30,7 @@ public class PeladatorApi /*extends SpringBootServletInitializer*/ {
   CommandLineRunner runner(PlayerService playerService, UserService userService) {
     return args -> {
       userService.save(
-          User.builder()
-              .name("Paulo")
-              .password("$2a$10$pjwIpeQ4nhUUkji323NkjuQahdESUnZCUMIgQO8F8D4RDqjflH0m.")
-              .role(RoleEnum.ROLE_ADMIN)
-              .build());
+          User.builder().name("Paulo").password("123456").role(RoleEnum.ROLE_ADMIN).build());
       playerService.save(
           Player.builder()
               .id(1L)

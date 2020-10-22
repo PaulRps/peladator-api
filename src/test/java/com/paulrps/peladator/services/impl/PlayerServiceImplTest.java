@@ -11,7 +11,6 @@ import com.paulrps.peladator.domain.entities.Player;
 import com.paulrps.peladator.domain.enums.PlayerLevelEnum;
 import com.paulrps.peladator.domain.enums.PlayerPositionEnum;
 import com.paulrps.peladator.repositories.PlayerResository;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -98,7 +97,7 @@ class PlayerServiceImplTest implements ServiceTest {
   }
 
   @Test
-  void getAll() {
+  void findAll() {
     //    given
     List<Player> players = Arrays.asList(player, new Player(), new Player());
     List<Payment> payments = Arrays.asList(Payment.builder().player(player).build());
@@ -139,7 +138,7 @@ class PlayerServiceImplTest implements ServiceTest {
 
   //  @Disabled // TODO: fix error
   @Test
-  void groupByPositionAndSort() throws ParseException {
+  void groupByPositionAndSort() {
     //    given
     player.setPosition(PlayerPositionEnum.GK);
     player.setId(1l);

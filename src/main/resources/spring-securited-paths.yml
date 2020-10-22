@@ -1,0 +1,5 @@
+permited:
+  all:
+    - /auth
+  OPTIONS:
+    - /**

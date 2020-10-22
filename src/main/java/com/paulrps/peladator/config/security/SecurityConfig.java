@@ -1,5 +1,6 @@
 package com.paulrps.peladator.config.security;
 
+import com.paulrps.peladator.config.exceptions.ApiExceptionService;
 import com.paulrps.peladator.services.TokenService;
 import com.paulrps.peladator.services.UserService;
 import com.paulrps.peladator.services.impl.AuthService;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.SessionManagementFilter;
 
@@ -30,16 +32,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired private UserService userService;
 
+  @Autowired private SpringSecuritedPaths permitedPathsConfig;
+
+  @Autowired private ApiExceptionService apiExceptionService;
+
   @Override
   @Bean
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
 
+  @Bean
+  public PasswordEncoder getEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
   // AUTHENTICATION CONFIGURARTIONS
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(authService).passwordEncoder(new BCryptPasswordEncoder());
+    auth.userDetailsService(authService).passwordEncoder(getEncoder());
   }
 
   @Bean
@@ -54,9 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS, "/**")
+        .antMatchers(
+            HttpMethod.OPTIONS, permitedPathsConfig.getPermitedPathsByMethod(HttpMethod.OPTIONS))
         .permitAll()
-        .antMatchers("/auth")
+        .antMatchers(permitedPathsConfig.getAllPermitedPaths())
         .permitAll()
         .anyRequest()
         .authenticated()
@@ -65,11 +77,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilterBefore(
-            new AuthByTokenFilter(tokenService, userService),
+            new AuthByTokenFilter(
+                tokenService, userService, permitedPathsConfig, apiExceptionService),
             UsernamePasswordAuthenticationFilter.class);
   }
 
   // STATIC FILES (imgs, .js) CONFIGURATIONS
   @Override
-  public void configure(WebSecurity web) throws Exception {}
+  public void configure(WebSecurity web) {}
 }

@@ -4,6 +4,7 @@ api:
     expiration: 86400000
     secret: secret
     token-type: Bearer
+    issuer: peladator_api
 spring:
   profiles:
     active: heroku

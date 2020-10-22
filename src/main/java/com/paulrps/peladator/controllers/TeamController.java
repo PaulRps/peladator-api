@@ -10,13 +10,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(
-    origins = {"http://localhost:4200", "https://peladator.netlify.com"},
+    origins = {"http://localhost:4200", "https://peladator.netlify.com", "*"},
     maxAge = 3600)
 @RestController
 @RequestMapping("team")
 public class TeamController {
+  private static TeamService teamService;
 
-  @Autowired TeamService teamService;
+  @Autowired
+  TeamController(TeamService teamService) {
+    TeamController.teamService = teamService;
+  }
 
   @PreAuthorize("permitAll()")
   @GetMapping("load-page")

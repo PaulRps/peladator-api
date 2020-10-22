@@ -4,6 +4,7 @@ api:
     expiration: 86400000
     secret: secret
     token-type: Bearer
+    issuer: peladator API
 spring:
   profiles:
     active: dev

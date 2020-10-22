@@ -23,13 +23,16 @@ public class TokenServiceImpl implements TokenService {
   @Value("${api.jwt.token-type}")
   private String tokenType;
 
+  @Value("${api.jwt.issuer}")
+  private String apiIssuer;
+
   public String createToken(Authentication auth) {
     User user = (User) auth.getPrincipal();
     Date today = new Date();
     // TODO: change sum of dates
     Date expiration = new Date(today.getTime() + this.expiration);
     return Jwts.builder()
-        .setIssuer("peladator API")
+        .setIssuer(apiIssuer)
         .setSubject(user.getId().toString())
         .setIssuedAt(today)
         .setExpiration(expiration)

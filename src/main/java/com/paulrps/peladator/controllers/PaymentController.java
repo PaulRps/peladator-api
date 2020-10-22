@@ -6,6 +6,7 @@ import com.paulrps.peladator.services.PaymentService;
 import com.paulrps.peladator.services.PlayerService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,39 +15,44 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("payment")
 public class PaymentController {
 
-  @Autowired PaymentService paymentService;
-  @Autowired PlayerService playerService;
+  private static PaymentService paymentService;
+  private static PlayerService playerService;
+
+  @Autowired
+  PaymentController(final PaymentService paymentService, final PlayerService playerService) {
+    PaymentController.paymentService = paymentService;
+    PaymentController.playerService = playerService;
+  }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @GetMapping("form-data")
-  ResponseEntity<PaymentFormData> getFormData() {
-    return ResponseEntity.ok(PaymentFormData.builder().players(playerService.findAll()).build());
+  public ResponseEntity<PaymentFormData> getFormData() {
+    return ResponseEntity.ok(paymentService.formData(playerService.findAll()));
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @GetMapping
-  ResponseEntity<List<Payment>> getAll() {
+  public ResponseEntity<List<Payment>> getAll() {
     return ResponseEntity.ok(paymentService.findAll());
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
-  ResponseEntity<List<Payment>> save(@RequestBody Payment payment) {
-    paymentService.save(payment);
-    return ResponseEntity.ok(paymentService.findAll());
+  public ResponseEntity<Payment> save(@RequestBody Payment payment) {
+    return new ResponseEntity(paymentService.save(payment), HttpStatus.CREATED);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping
-  ResponseEntity<List<Payment>> update(@RequestBody Payment payment) {
+  public ResponseEntity<Void> update(@RequestBody Payment payment) {
     paymentService.update(payment);
-    return ResponseEntity.ok(paymentService.findAll());
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("{id}")
-  ResponseEntity<List<Payment>> update(@PathVariable Long id) {
+  public ResponseEntity<Void> update(@PathVariable Long id) {
     paymentService.delete(id);
-    return ResponseEntity.ok(paymentService.findAll());
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 }

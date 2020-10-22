@@ -1,0 +1,12 @@
+error:
+  E001: Parameter {0} not present
+  E002: Resource {0} not found
+  E003: Error on save entity {0}
+  E004: Error on delete entity {0}
+  E005: Internal server error on {0}
+  E006: BEARER token not present on Authorization header
+  E007: Token {0} is invalid
+  E008: Authentication failed, user {0} not found
+  E009: Error on creation of token to user {0}
+warning:
+  W001: nope
