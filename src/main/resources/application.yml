@@ -27,3 +27,8 @@ server:
   h2:
     console:
       enabled: true
+logging:
+  level:
+    com:
+      paulrps:
+        peladator: DEBUG
