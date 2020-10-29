@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(
-    origins = {"http://localhost:4200", "https://peladator.netlify.com", "*"},
+    origins = {"http://localhost:4200", "https://peladator.netlify.com"},
     maxAge = 3600)
 @RestController
 @RequestMapping("team")

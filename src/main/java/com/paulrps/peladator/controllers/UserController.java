@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(
+    origins = {"http://localhost:4200", "https://peladator.netlify.com"},
+    maxAge = 3600)
 @RestController
 @RequestMapping("user")
 public class UserController {
