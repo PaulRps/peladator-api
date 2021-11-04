@@ -9,5 +9,5 @@ This is a stateless REST API written in Java 8 with Spring Boot, it consumes a M
 * Spring Security
 * JWT
 * Spring Data
-* MongoDB
+* Postgres
 * REST
