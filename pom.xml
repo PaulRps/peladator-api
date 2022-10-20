@@ -14,7 +14,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>peladator-api</name>
-  <description>peladator-api project for spring boot</description>
+  <description>peladator-api to provide control of the matches</description>
 
   <properties>
     <java.version>1.8</java.version>
