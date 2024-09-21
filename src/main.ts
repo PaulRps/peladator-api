@@ -9,7 +9,7 @@ async function bootstrap(module: any): Promise<any> {
   const nestApp = await NestFactory.create(module, new ExpressAdapter(app))
 
   nestApp.enableCors()
-  nestApp.setGlobalPrefix('/.netlify/functions/server')
+  nestApp.setGlobalPrefix('/api/')
   // await nestApp.listen(3000);
   await nestApp.init()
   return nestApp
