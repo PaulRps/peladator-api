@@ -9,7 +9,7 @@ export class MongoConfigService {
     const uri = this.configService.get<string>(
       'mongo_config.mongoUri',
     )
-    console.log('mongoUri', uri);
+    console.log('mongoUri', uri) 
     
     return uri
   }

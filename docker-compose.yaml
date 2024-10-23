@@ -1,5 +1,19 @@
 version: '3'
 services:
+  api:
+    image: portfolio-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    command: npm run start:dev
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
   mongo:
     container_name: peladator_mongo
     image: mongo
