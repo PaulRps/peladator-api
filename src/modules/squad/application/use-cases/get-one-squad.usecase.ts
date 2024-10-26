@@ -1,11 +1,15 @@
 import {Inject, Injectable} from '@nestjs/common'
 import {Squad, SquadId} from '../../domain/squad'
-import {SQUAD_OUT_PORT, SquadOutPort} from '../ports/out/squad-out.port'
+import {
+  SQUAD_DATABASE_OUT_PORT,
+  SquadDatabaseOutPort
+} from '../ports/out/squad-database-out.port'
 
 @Injectable()
 export class GetOneSquad {
   constructor(
-    @Inject(SQUAD_OUT_PORT) private readonly squadOutPort: SquadOutPort
+    @Inject(SQUAD_DATABASE_OUT_PORT)
+    private readonly squadOutPort: SquadDatabaseOutPort
   ) {}
 
   execute(id: SquadId): Promise<Squad | null> {

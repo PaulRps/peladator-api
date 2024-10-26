@@ -1,11 +1,11 @@
 import {Injectable} from '@nestjs/common'
-import {PlayerOutPort} from 'src/modules/squad/application/ports/out/player-out.port'
+import {PlayerDatabaseOutPort} from 'src/modules/squad/application/ports/out/player-database-out.port'
 import {PlayerId, Player} from 'src/modules/squad/domain/player'
-import {PlayerRepository} from 'src/modules/squad/infra/config/persistence/mongo/player.repository'
+import {PlayerRepository} from 'src/modules/squad/infra/adapters/out/persistence/mongo/player.repository'
 import {PlayerConverter} from './player.converter'
 
 @Injectable()
-export class PlayerOutAdapter implements PlayerOutPort {
+export class PlayerMongoOutAdapter implements PlayerDatabaseOutPort {
   constructor(
     private readonly playerRepository: PlayerRepository,
     private readonly playerConverter: PlayerConverter

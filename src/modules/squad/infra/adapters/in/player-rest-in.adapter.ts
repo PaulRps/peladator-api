@@ -8,12 +8,12 @@ import {
   Post,
   Put
 } from '@nestjs/common'
-import {PlayerInPort} from 'src/modules/squad/application/ports/in/player-in.port'
+import {PlayerRestInPort} from 'src/modules/squad/application/ports/in/player-rest-in.port'
 import {PlayerRestService} from 'src/modules/squad/application/services/player-rest.service'
 import {Player, PlayerId} from 'src/modules/squad/domain/player'
 
-@Controller('player')
-export class PlayerRestInAdapter implements PlayerInPort {
+@Controller('v1/player')
+export class PlayerRestInAdapter implements PlayerRestInPort {
   constructor(private readonly playerService: PlayerRestService) {}
 
   @HttpCode(201)

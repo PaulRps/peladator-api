@@ -1,11 +1,15 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Player } from '../../domain/player'
-import { PLAYER_OUT_PORT, PlayerOutPort } from '../ports/out/player-out.port'
+import {
+  PLAYER_DATABASE_OUT_PORT,
+  PlayerDatabaseOutPort
+} from '../ports/out/player-database-out.port'
 
 @Injectable()
 export class FilterPlayers {
   constructor(
-    @Inject(PLAYER_OUT_PORT) private readonly playerOutPort: PlayerOutPort
+    @Inject(PLAYER_DATABASE_OUT_PORT)
+    private readonly playerOutPort: PlayerDatabaseOutPort
   ) {}
 
   execute(squadId: string): Promise<Player[]> {

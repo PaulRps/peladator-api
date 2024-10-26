@@ -1,11 +1,15 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {PLAYER_OUT_PORT, PlayerOutPort} from '../ports/out/player-out.port'
-import {PlayerId, Player} from '../../domain/player'
+import {Player} from '../../domain/player'
+import {
+  PLAYER_DATABASE_OUT_PORT,
+  PlayerDatabaseOutPort
+} from '../ports/out/player-database-out.port'
 
 @Injectable()
 export class UpdatePlayer {
   constructor(
-    @Inject(PLAYER_OUT_PORT) private readonly playerOutPort: PlayerOutPort
+    @Inject(PLAYER_DATABASE_OUT_PORT)
+    private readonly playerOutPort: PlayerDatabaseOutPort
   ) {}
 
   execute(player: Player): Promise<void> {

@@ -1,7 +1,10 @@
 import {Injectable} from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
 import {Model, Types} from 'mongoose'
-import {Squad, SquadDocument} from './squad.document'
+import {
+  Squad,
+  SquadDocument
+} from '../../../../config/persistence/mongo/squad.document'
 
 @Injectable()
 export class SquadRepository {
@@ -35,5 +38,11 @@ export class SquadRepository {
       .updateOne({_id: squad._id}, squad)
       .exec()
       .then(() => {})
+  }
+
+  exists(squadId: string): Promise<boolean> {
+    return this.squadModel
+      .exists({_id: new Types.ObjectId(squadId)})
+      .then((exists) => Boolean(exists))
   }
 }

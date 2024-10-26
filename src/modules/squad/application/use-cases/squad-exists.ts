@@ -1,18 +1,17 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {Squad} from '../../domain/squad'
 import {
   SQUAD_DATABASE_OUT_PORT,
   SquadDatabaseOutPort
 } from '../ports/out/squad-database-out.port'
 
 @Injectable()
-export class UpdateSquad {
+export class SquadExists {
   constructor(
     @Inject(SQUAD_DATABASE_OUT_PORT)
-    private readonly squadOutPort: SquadDatabaseOutPort
+    private readonly squadDatabaseOutPort: SquadDatabaseOutPort
   ) {}
 
-  execute(squad: Squad): Promise<void> {
-    return this.squadOutPort.update(squad)
+  execute(squadId: string): Promise<boolean> {
+    return this.squadDatabaseOutPort.exists(squadId)
   }
 }

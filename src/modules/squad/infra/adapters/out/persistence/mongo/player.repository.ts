@@ -1,7 +1,10 @@
 import {Injectable} from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
 import {Model, Types} from 'mongoose'
-import {Player, PlayerDocument} from './player.document'
+import {
+  Player,
+  PlayerDocument
+} from '../../../../config/persistence/mongo/player.document'
 
 @Injectable()
 export class PlayerRepository {

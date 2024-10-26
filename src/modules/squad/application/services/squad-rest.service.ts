@@ -18,7 +18,7 @@ export class SquadRestService {
     return this.createSquad.execute(squad)
   }
 
-  getOne(id: SquadId):  Promise<Squad> | null {
+  getOne(id: SquadId): Promise<Squad> | null {
     return this.getOneSquad.execute(id)
   }
 
