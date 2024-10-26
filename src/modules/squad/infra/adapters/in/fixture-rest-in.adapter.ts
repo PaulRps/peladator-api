@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpCode, Param, Post} from '@nestjs/common'
+import {Body, Controller, Get, HttpCode, Post, Query} from '@nestjs/common'
 import {FixtureRestInPort} from 'src/modules/squad/application/ports/in/fixture-rest-in.port'
 import {FixtureRestService} from 'src/modules/squad/application/services/fixture-rest.service'
 import {Fixture} from 'src/modules/squad/domain/fixture'
@@ -16,8 +16,8 @@ export class FixtureRestInAdapter implements FixtureRestInPort {
   }
 
   @HttpCode(200)
-  @Get(':squadId/latest')
-  getLastFixture(@Param('squadId') squadId: SquadId): Promise<Fixture> {
+  @Get('latest')
+  getLastFixture(@Query('squadId') squadId: SquadId): Promise<Fixture> {
     return this.fixtureRestService.getLatestFixture(squadId)
   }
 }
