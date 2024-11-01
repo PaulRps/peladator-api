@@ -17,7 +17,7 @@ export class FixtureRestInAdapter implements FixtureRestInPort {
 
   @HttpCode(200)
   @Get('latest')
-  getLastFixture(@Query('squadId') squadId: SquadId): Promise<Fixture> {
+  getLatestFixture(@Query('squadId') squadId: SquadId): Promise<Fixture> {
     return this.fixtureRestService.getLatestFixture(squadId)
   }
 }

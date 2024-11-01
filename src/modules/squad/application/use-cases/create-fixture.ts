@@ -47,6 +47,7 @@ export class CreateFixture {
       0: {players: [], level: 0},
       1: {players: [], level: 0}
     }
+
     Object.keys(playersByPosition).forEach((position) => {
       playersByPosition[position].sort((a, b) => b.level - a.level)
 
@@ -80,10 +81,12 @@ export class CreateFixture {
     const squads = [
       new LineUp({
         name: 'Squad 1',
+        level: balancedTwoSquads[0].players.reduce((a, b) => a + b.level, 0),
         players: balancedTwoSquads[0].players
       }),
       new LineUp({
         name: 'Squad 2',
+        level: balancedTwoSquads[1].players.reduce((a, b) => a + b.level, 0),
         players: balancedTwoSquads[1].players
       })
     ]
@@ -93,6 +96,7 @@ export class CreateFixture {
         squads.push(
           new LineUp({
             name: `Squad ${i + 1}`,
+            level: lineUpSquad[i].reduce((a, b) => a + b.level, 0),
             players: lineUpSquad[i]
           })
         )
@@ -103,14 +107,14 @@ export class CreateFixture {
   }
 
   private createBySequence(criteria: FixtureCriteria): PlayerForFixture[][] {
-    let playersInSquad = Math.floor(
+    let squadsAmount = Math.floor(
       criteria.players.length / criteria.amountPlayersInLineUp
     )
     const lineUpSquad = []
-    for (let i = 0; i < criteria.amountPlayersInLineUp; i++) {
+    for (let i = 0; i < squadsAmount; i++) {
       const squad = []
 
-      for (let j = 0; j < playersInSquad; j++) {
+      for (let j = 0; j < criteria.amountPlayersInLineUp; j++) {
         squad.push(criteria.players[0])
         criteria.players.splice(0, 1)
       }
@@ -122,7 +126,10 @@ export class CreateFixture {
     criteria.players.forEach((player) => {
       bench.push(player)
     })
-    lineUpSquad.push(bench)
+
+    if (bench.length > 0) {
+      lineUpSquad.push(bench)
+    }
 
     return lineUpSquad
   }

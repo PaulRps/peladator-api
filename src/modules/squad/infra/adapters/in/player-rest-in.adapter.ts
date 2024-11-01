@@ -6,7 +6,8 @@ import {
   HttpCode,
   Param,
   Post,
-  Put
+  Put,
+  Query
 } from '@nestjs/common'
 import {PlayerRestInPort} from 'src/modules/squad/application/ports/in/player-rest-in.port'
 import {PlayerRestService} from 'src/modules/squad/application/services/player-rest.service'
@@ -18,13 +19,13 @@ export class PlayerRestInAdapter implements PlayerRestInPort {
 
   @HttpCode(201)
   @Post()
-  create(@Body() player: Player): Promise<PlayerId> {
-    return this.playerService.create(player)
+  create(@Body() player: Player): Promise<Player> {
+    return <any>this.playerService.create(player)
   }
 
   @HttpCode(200)
-  @Get(':id')
-  getOne(@Param('id') id: PlayerId): Promise<Player> {
+  @Get()
+  getOne(@Query('id') id: PlayerId): Promise<Player> {
     return this.playerService.getOne(id)
   }
 
@@ -44,5 +45,11 @@ export class PlayerRestInAdapter implements PlayerRestInPort {
   @Delete(':id')
   delete(@Param('id') id: PlayerId): Promise<void> {
     return this.playerService.delete(id)
+  }
+
+  @HttpCode(200)
+  @Get('positions')
+  getPlayerPositions(): Promise<string[]> {
+    return this.playerService.getPlayerPositions()
   }
 }

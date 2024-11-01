@@ -4,5 +4,5 @@ import {SquadId} from 'src/modules/squad/domain/squad'
 
 export interface FixtureRestInPort {
   createFixture(fixture: FixtureCriteria): Promise<Fixture>
-  getLastFixture(squadId: SquadId): Promise<Fixture>
+  getLatestFixture(squadId: SquadId): Promise<Fixture>
 }

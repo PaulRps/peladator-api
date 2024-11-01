@@ -25,6 +25,7 @@ import {PlayerMongoOutAdapter} from './infra/adapters/out/persistence/mongo/play
 import {SquadMongoOutAdapter} from './infra/adapters/out/persistence/mongo/squad-mongo-out.adapter'
 import {PersistenceModule} from './infra/adapters/out/persistence/persistence.module'
 import {SquadExists} from './application/use-cases/squad-exists'
+import {GetPlayerPositions} from './application/use-cases/get-player-positions'
 
 @Module({
   controllers: [SquadRestInAdapter, PlayerRestInAdapter, FixtureRestInAdapter],
@@ -44,6 +45,7 @@ import {SquadExists} from './application/use-cases/squad-exists'
     FilterPlayers,
     CreateFixture,
     GetLatestFixture,
+    GetPlayerPositions,
     {
       provide: SQUAD_DATABASE_OUT_PORT,
       useClass: SquadMongoOutAdapter

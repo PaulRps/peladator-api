@@ -14,13 +14,13 @@ export class CreatePlayer {
     private readonly squadExists: SquadExists
   ) {}
 
-  async execute(player: Player): Promise<PlayerId> {
+  async execute(player: Player): Promise<Player> {
     const squadExists = await this.squadExists.execute(player.squadId)
 
     if (!squadExists) {
       throw new Error('Squad not found')
     }
 
-    return this.playerOutPort.create(player)
+    return this.playerOutPort.create(player).then((id) => new Player({id}))
   }
 }

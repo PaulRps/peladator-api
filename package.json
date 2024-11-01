@@ -1,10 +1,10 @@
 {
   "name": "peladator-api",
   "version": "0.0.1",
-  "description": "",
+  "description": "API to manage funny soccer matches",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "private",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -30,7 +30,8 @@
     "joi": "^17.13.3",
     "mongoose": "^8.7.2",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
