@@ -20,21 +20,28 @@ export class CreateFixture {
 
     const lineUpSquad = this.createBySequence(criteria)
 
-    const squads = this.balanceSquads(lineUpSquad)
+    let lineUps: LineUp[] = []
+    if (lineUpSquad.length >= 2) {
+      lineUps = this.balanceTwoLineUpsByLevel(lineUpSquad)
+    } else {
+      lineUps.push(this.createLineUp('Squad 1', lineUpSquad[0]))
+    }
 
     return this.fixtureDatabaseOutPort.create(
       new Fixture({
         squadId: criteria.squadId,
-        lineUps: squads,
+        lineUps: lineUps,
         createdAt: new Date().toISOString()
       })
     )
   }
 
-  private balanceSquads(lineUpSquad: PlayerForFixture[][]): LineUp[] {
-    const jointSquads = lineUpSquad[0].concat(lineUpSquad[1])
+  private balanceTwoLineUpsByLevel(
+    lineUpSquad: PlayerForFixture[][]
+  ): LineUp[] {
+    const jointLineUps = lineUpSquad[0].concat(lineUpSquad[1])
 
-    const playersByPosition = jointSquads.reduce((map, player) => {
+    const playersByPosition = jointLineUps.reduce((map, player) => {
       if (!map[player.position]) {
         map[player.position] = [player]
       } else {
@@ -78,40 +85,26 @@ export class CreateFixture {
       }
     }
 
-    const squads = [
-      new LineUp({
-        name: 'Squad 1',
-        level: balancedTwoSquads[0].players.reduce((a, b) => a + b.level, 0),
-        players: balancedTwoSquads[0].players
-      }),
-      new LineUp({
-        name: 'Squad 2',
-        level: balancedTwoSquads[1].players.reduce((a, b) => a + b.level, 0),
-        players: balancedTwoSquads[1].players
-      })
+    const twoLineUps = [
+      this.createLineUp('Lineup 1', balancedTwoSquads[0].players),
+      this.createLineUp('Lineup 2', balancedTwoSquads[1].players)
     ]
 
     if (lineUpSquad.length > 2) {
       for (let i = 2; i < lineUpSquad.length; i++) {
-        squads.push(
-          new LineUp({
-            name: `Squad ${i + 1}`,
-            level: lineUpSquad[i].reduce((a, b) => a + b.level, 0),
-            players: lineUpSquad[i]
-          })
-        )
+        twoLineUps.push(this.createLineUp(`Lineup ${i + 1}`, lineUpSquad[i]))
       }
     }
 
-    return squads
+    return twoLineUps
   }
 
   private createBySequence(criteria: FixtureCriteria): PlayerForFixture[][] {
-    let squadsAmount = Math.floor(
+    let lineUpAmount = Math.floor(
       criteria.players.length / criteria.amountPlayersInLineUp
     )
     const lineUpSquad = []
-    for (let i = 0; i < squadsAmount; i++) {
+    for (let i = 0; i < lineUpAmount; i++) {
       const squad = []
 
       for (let j = 0; j < criteria.amountPlayersInLineUp; j++) {
@@ -147,5 +140,13 @@ export class CreateFixture {
     })
 
     return players
+  }
+
+  private createLineUp(name: string, players: PlayerForFixture[]): LineUp {
+    return new LineUp({
+      name: name,
+      level: players.reduce((a, b) => a + b.level, 0),
+      players: players
+    })
   }
 }
