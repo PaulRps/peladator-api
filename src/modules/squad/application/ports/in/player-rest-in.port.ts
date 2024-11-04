@@ -8,4 +8,6 @@ export interface PlayerRestInPort {
   update(player: Player): Promise<void>
   delete(id: PlayerId): Promise<void>
   getPlayerPositions(): Promise<string[]>
+  savePlayerForFixture(player: Player): Promise<void>
+  getPlayersForFixture(squadId: string): Promise<Player[]>
 }

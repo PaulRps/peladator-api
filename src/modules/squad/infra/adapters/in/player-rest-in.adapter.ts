@@ -52,4 +52,16 @@ export class PlayerRestInAdapter implements PlayerRestInPort {
   getPlayerPositions(): Promise<string[]> {
     return this.playerService.getPlayerPositions()
   }
+
+  @HttpCode(201)
+  @Post('for-fixture')
+  savePlayerForFixture(@Body() player: Player): Promise<void> {
+    return this.playerService.savePlayerForFixture(player)
+  }
+
+  @HttpCode(200)
+  @Get('for-fixture')
+  getPlayersForFixture(@Query('squadId') squadId: string): Promise<Player[]> {
+    return this.playerService.getPlayersForFixture(squadId)
+  }
 }

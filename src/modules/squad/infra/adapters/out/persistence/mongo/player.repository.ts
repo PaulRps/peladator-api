@@ -5,11 +5,18 @@ import {
   Player,
   PlayerDocument
 } from '../../../../config/persistence/mongo/player.document'
+import {
+  PlayerForFixture,
+  PlayerForFixtureDocument
+} from 'src/modules/squad/infra/config/persistence/mongo/player-for-fixture.document'
 
 @Injectable()
 export class PlayerRepository {
   constructor(
-    @InjectModel(Player.name) private playerModel: Model<PlayerDocument>
+    @InjectModel(Player.name)
+    private readonly playerModel: Model<PlayerDocument>,
+    @InjectModel(PlayerForFixture.name)
+    private readonly playerForFixtureModel: Model<PlayerForFixtureDocument>
   ) {}
 
   getOne(id: string): Promise<PlayerDocument | null> {
@@ -47,5 +54,24 @@ export class PlayerRepository {
       .deleteMany({squadId: new Types.ObjectId(id)})
       .exec()
       .then(() => {})
+  }
+
+  saveForFixture(player: PlayerForFixture): Promise<void> {
+    return this.playerForFixtureModel.create(player).then(() => {})
+  }
+
+  getPlayersForFixture(squadId: string): Promise<PlayerForFixtureDocument[]> {
+    return this.playerForFixtureModel
+      .find({squadId: new Types.ObjectId(squadId)})
+      .exec()
+  }
+
+  existsPlayerForFixture(playerId: string, squadId: string): Promise<boolean> {
+    return this.playerForFixtureModel
+      .exists({
+        squadId: new Types.ObjectId(squadId),
+        _id: new Types.ObjectId(playerId)
+      })
+      .then((exists) => Boolean(exists))
   }
 }

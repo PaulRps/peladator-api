@@ -6,6 +6,8 @@ import {FilterPlayers} from '../use-cases/filter-players.usecase'
 import {GetOnePlayer} from '../use-cases/get-one-player.usecase'
 import {UpdatePlayer} from '../use-cases/update-player.usecase'
 import {GetPlayerPositions} from '../use-cases/get-player-positions'
+import {GetPlayersForFixture} from '../use-cases/get-players-for-fixture'
+import {SavePlayerForFixture} from '../use-cases/save-player-for-fixture'
 
 @Injectable()
 export class PlayerRestService {
@@ -15,7 +17,9 @@ export class PlayerRestService {
     private readonly getOnePlayer: GetOnePlayer,
     private readonly deletePlayer: DeletePlayer,
     private readonly filterPlayers: FilterPlayers,
-    private readonly getPlayerPosition: GetPlayerPositions
+    private readonly getPlayerPosition: GetPlayerPositions,
+    private readonly savePlayerForFixtur: SavePlayerForFixture,
+    private readonly getPlayersForFixtur: GetPlayersForFixture
   ) {}
 
   create(player: Player): Promise<Player> {
@@ -40,5 +44,13 @@ export class PlayerRestService {
 
   getPlayerPositions(): Promise<string[]> {
     return this.getPlayerPosition.execute()
+  }
+
+  savePlayerForFixture(player: Player): Promise<void> {
+    return this.savePlayerForFixtur.execute(player)
+  }
+
+  getPlayersForFixture(squadId: string): Promise<Player[]> {
+    return this.getPlayersForFixtur.execute(squadId)
   }
 }

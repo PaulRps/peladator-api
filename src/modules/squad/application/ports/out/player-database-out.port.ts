@@ -7,4 +7,7 @@ export interface PlayerDatabaseOutPort {
   create(player: Player): Promise<PlayerId>
   update(player: Player): Promise<void>
   delete(id: PlayerId): Promise<void>
+  savePlayerForFixture(player: Player): Promise<void>
+  getPlayersForFixture(squadId: string): Promise<Player[]>
+  existsPlayerForFixture(playerId: PlayerId, squadId: string): Promise<boolean>
 }

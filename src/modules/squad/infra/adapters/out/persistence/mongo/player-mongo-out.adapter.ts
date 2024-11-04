@@ -40,4 +40,23 @@ export class PlayerMongoOutAdapter implements PlayerDatabaseOutPort {
   delete(id: PlayerId): Promise<void> {
     return this.playerRepository.delete(id)
   }
+
+  savePlayerForFixture(player: Player): Promise<void> {
+    return this.playerRepository.saveForFixture(
+      this.playerConverter.toPlayerForFixtureDocument(player)
+    )
+  }
+
+  getPlayersForFixture(squadId: string): Promise<Player[]> {
+    return this.playerRepository
+      .getPlayersForFixture(squadId)
+      .then((players) =>
+        players?.map((player) =>
+          this.playerConverter.toPlayerForFixture(player)
+        )
+      )
+  }
+  existsPlayerForFixture(playerId: string, squadId: string): Promise<boolean> {
+    return this.playerRepository.existsPlayerForFixture(playerId, squadId)
+  }
 }
