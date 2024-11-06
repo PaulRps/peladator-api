@@ -28,6 +28,7 @@ import {SquadExists} from './application/use-cases/squad-exists'
 import {GetPlayerPositions} from './application/use-cases/get-player-positions'
 import {SavePlayerForFixture} from './application/use-cases/save-player-for-fixture'
 import {GetPlayersForFixture} from './application/use-cases/get-players-for-fixture'
+import {UpdateFixture} from './application/use-cases/update-fixture'
 
 @Module({
   controllers: [SquadRestInAdapter, PlayerRestInAdapter, FixtureRestInAdapter],
@@ -50,6 +51,7 @@ import {GetPlayersForFixture} from './application/use-cases/get-players-for-fixt
     GetPlayerPositions,
     SavePlayerForFixture,
     GetPlayersForFixture,
+    UpdateFixture,
     {
       provide: SQUAD_DATABASE_OUT_PORT,
       useClass: SquadMongoOutAdapter

@@ -3,12 +3,14 @@ import {Fixture} from '../../domain/fixture'
 import {FixtureCriteria} from '../../domain/fixture-criteria'
 import {CreateFixture} from '../use-cases/create-fixture'
 import {GetLatestFixture as GetLatestFixture} from '../use-cases/get-latest-fixture'
+import {UpdateFixture} from '../use-cases/update-fixture'
 
 @Injectable()
 export class FixtureRestService {
   constructor(
     private readonly creatFixture: CreateFixture,
-    private readonly getLastFixtur: GetLatestFixture
+    private readonly getLastFixtur: GetLatestFixture,
+    private readonly updateFixture: UpdateFixture
   ) {}
 
   getLatestFixture(squadId: string): Promise<Fixture> {
@@ -17,5 +19,9 @@ export class FixtureRestService {
 
   createFixture(fixture: FixtureCriteria): Promise<Fixture> {
     return this.creatFixture.execute(fixture)
+  }
+
+  update(fixture: Fixture): Promise<void> {
+    return this.updateFixture.execute(fixture)
   }
 }

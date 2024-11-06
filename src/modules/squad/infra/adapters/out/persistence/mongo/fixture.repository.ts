@@ -25,4 +25,11 @@ export class FixtureRepository {
       .limit(1)
       .exec()
   }
+
+  update(fixture: Fixture): Promise<void> {
+    return this.fixtureModel
+      .updateOne({_id: fixture._id}, fixture)
+      .exec()
+      .then(() => {})
+  }
 }

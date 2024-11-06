@@ -26,4 +26,10 @@ export class FixtureMongoOutAdapter implements FixtureDatabaseOutPort {
         fixture ? this.fixtureConverter.toFixture(fixture) : null
       )
   }
+
+  update(fixture: Fixture): Promise<void> {
+    return this.fixtureRepository.update(
+      this.fixtureConverter.toFixtureDocument(fixture)
+    )
+  }
 }

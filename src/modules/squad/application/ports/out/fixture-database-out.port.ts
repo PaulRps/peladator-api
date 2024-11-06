@@ -5,4 +5,5 @@ export const FIXTURE_DATABASE_OUT_PORT = 'FIXTURE_DATABASE_OUT_PORT'
 export interface FixtureDatabaseOutPort {
   create(fixture: Fixture): Promise<Fixture>
   getLatestFixture(squadId: SquadId): Promise<Fixture | null>
+  update(fixture: Fixture): Promise<void>
 }
