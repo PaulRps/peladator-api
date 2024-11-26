@@ -17,9 +17,9 @@ export class PlayerMongoOutAdapter implements PlayerDatabaseOutPort {
       .then((player) => this.playerConverter.toPlayer(player))
   }
 
-  getBy(squadId: string): Promise<Player[]> {
+  getBy(squadId: string, ids?: string[]): Promise<Player[]> {
     return this.playerRepository
-      .getBySquadId(squadId)
+      .getBy(squadId, ids)
       .then((players) =>
         players?.map((player) => this.playerConverter.toPlayer(player))
       )

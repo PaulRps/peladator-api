@@ -25,7 +25,7 @@ export class SquadMongoOutAdapter implements SquadDatabaseOutPort {
 
       return this.squadConverter.toSquad(
         squad,
-        (await this.playerRepository.getBySquadId(id))?.map((player) =>
+        (await this.playerRepository.getBy(id))?.map((player) =>
           this.playerConverter.toPlayer(player)
         )
       )

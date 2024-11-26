@@ -2,13 +2,13 @@ import {Injectable} from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
 import {Model, Types} from 'mongoose'
 import {
-  Player,
-  PlayerDocument
-} from '../../../../config/persistence/mongo/player.document'
-import {
   PlayerForFixture,
   PlayerForFixtureDocument
 } from 'src/modules/squad/infra/config/persistence/mongo/player-for-fixture.document'
+import {
+  Player,
+  PlayerDocument
+} from '../../../../config/persistence/mongo/player.document'
 
 @Injectable()
 export class PlayerRepository {
@@ -23,8 +23,14 @@ export class PlayerRepository {
     return this.playerModel.findOne({_id: new Types.ObjectId(id)}).exec()
   }
 
-  getBySquadId(squadId: string): Promise<PlayerDocument[]> {
-    return this.playerModel.find({squadId: new Types.ObjectId(squadId)}).exec()
+  getBy(squadId: string, ids?: string[]): Promise<PlayerDocument[]> {
+    let query: any = {squadId: new Types.ObjectId(squadId)}
+
+    if (ids) {
+      query._id = {$in: ids.map((id) => new Types.ObjectId(id))}
+    }
+
+    return this.playerModel.find(query).exec()
   }
 
   save(player: Player): Promise<string> {

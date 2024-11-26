@@ -1,8 +1,8 @@
 import {Module} from '@nestjs/common'
 import {CoreModule} from '../core/core.module'
-import {FIXTURE_DATABASE_OUT_PORT} from './application/ports/out/fixture-database-out.port'
-import {PLAYER_DATABASE_OUT_PORT} from './application/ports/out/player-database-out.port'
-import {SQUAD_DATABASE_OUT_PORT} from './application/ports/out/squad-database-out.port'
+import {FixtureDatabaseOutPort} from './application/ports/out/fixture-database-out.port'
+import {PlayerDatabaseOutPort} from './application/ports/out/player-database-out.port'
+import {SquadDatabaseOutPort} from './application/ports/out/squad-database-out.port'
 import {FixtureRestService} from './application/services/fixture-rest.service'
 import {PlayerRestService} from './application/services/player-rest.service'
 import {SquadRestService} from './application/services/squad-rest.service'
@@ -15,6 +15,11 @@ import {FilterPlayers} from './application/use-cases/filter-players.usecase'
 import {GetLatestFixture} from './application/use-cases/get-latest-fixture'
 import {GetOnePlayer} from './application/use-cases/get-one-player.usecase'
 import {GetOneSquad} from './application/use-cases/get-one-squad.usecase'
+import {GetPlayerPositions} from './application/use-cases/get-player-positions'
+import {GetPlayersForFixture} from './application/use-cases/get-players-for-fixture'
+import {SavePlayerForFixture} from './application/use-cases/save-player-for-fixture'
+import {SquadExists} from './application/use-cases/squad-exists'
+import {UpdateFixture} from './application/use-cases/update-fixture'
 import {UpdatePlayer} from './application/use-cases/update-player.usecase'
 import {UpdateSquad} from './application/use-cases/update-squad.usecase'
 import {FixtureRestInAdapter} from './infra/adapters/in/fixture-rest-in.adapter'
@@ -24,11 +29,6 @@ import {FixtureMongoOutAdapter} from './infra/adapters/out/persistence/mongo/fix
 import {PlayerMongoOutAdapter} from './infra/adapters/out/persistence/mongo/player-mongo-out.adapter'
 import {SquadMongoOutAdapter} from './infra/adapters/out/persistence/mongo/squad-mongo-out.adapter'
 import {PersistenceModule} from './infra/adapters/out/persistence/persistence.module'
-import {SquadExists} from './application/use-cases/squad-exists'
-import {GetPlayerPositions} from './application/use-cases/get-player-positions'
-import {SavePlayerForFixture} from './application/use-cases/save-player-for-fixture'
-import {GetPlayersForFixture} from './application/use-cases/get-players-for-fixture'
-import {UpdateFixture} from './application/use-cases/update-fixture'
 
 @Module({
   controllers: [SquadRestInAdapter, PlayerRestInAdapter, FixtureRestInAdapter],
@@ -53,15 +53,15 @@ import {UpdateFixture} from './application/use-cases/update-fixture'
     GetPlayersForFixture,
     UpdateFixture,
     {
-      provide: SQUAD_DATABASE_OUT_PORT,
+      provide: SquadDatabaseOutPort.name,
       useClass: SquadMongoOutAdapter
     },
     {
-      provide: PLAYER_DATABASE_OUT_PORT,
+      provide: PlayerDatabaseOutPort.name,
       useClass: PlayerMongoOutAdapter
     },
     {
-      provide: FIXTURE_DATABASE_OUT_PORT,
+      provide: FixtureDatabaseOutPort.name,
       useClass: FixtureMongoOutAdapter
     }
   ],

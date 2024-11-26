@@ -2,7 +2,10 @@ import {Injectable} from '@nestjs/common'
 import {Player, PlayerId} from '../../domain/player'
 import {CreatePlayer} from '../use-cases/create-player.usecase'
 import {DeletePlayer} from '../use-cases/delete-player.usecase'
-import {FilterPlayers} from '../use-cases/filter-players.usecase'
+import {
+  FilterPlayers,
+  FilterPlayersForFixture
+} from '../use-cases/filter-players.usecase'
 import {GetOnePlayer} from '../use-cases/get-one-player.usecase'
 import {UpdatePlayer} from '../use-cases/update-player.usecase'
 import {GetPlayerPositions} from '../use-cases/get-player-positions'
@@ -38,8 +41,10 @@ export class PlayerRestService {
     return this.getOnePlayer.execute(id)
   }
 
-  getBy(squadId: string): Promise<Player[]> {
-    return this.filterPlayers.execute(squadId)
+  getBy(squadId: string, ids?: PlayerId[]): Promise<Player[]> {
+    return this.filterPlayers.execute(
+      new FilterPlayersForFixture({squadId, ids})
+    )
   }
 
   getPlayerPositions(): Promise<string[]> {

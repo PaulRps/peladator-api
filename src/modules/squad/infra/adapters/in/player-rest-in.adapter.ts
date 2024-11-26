@@ -30,9 +30,12 @@ export class PlayerRestInAdapter implements PlayerRestInPort {
   }
 
   @HttpCode(200)
-  @Get('filter/:squadId')
-  getBy(@Param('squadId') squadId: string): Promise<Player[]> {
-    return this.playerService.getBy(squadId)
+  @Get('filter')
+  getBy(
+    @Query('squadId') squadId: string,
+    @Query('playerIds') playerIds: PlayerId[]
+  ): Promise<Player[]> {
+    return this.playerService.getBy(squadId, playerIds)
   }
 
   @HttpCode(200)

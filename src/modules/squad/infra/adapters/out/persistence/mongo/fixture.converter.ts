@@ -1,6 +1,8 @@
 import {Injectable} from '@nestjs/common'
 import {Types} from 'mongoose'
 import {Fixture} from 'src/modules/squad/domain/fixture'
+import {LineUp} from 'src/modules/squad/domain/lineup'
+import {PlayerForFixture} from 'src/modules/squad/domain/player-for-fixture'
 import * as FixtureDocument from 'src/modules/squad/infra/config/persistence/mongo/fixture.document'
 
 @Injectable()
@@ -10,7 +12,18 @@ export class FixtureConverter {
       id: fixture._id.toString(),
       squadId: fixture.squadId.toString(),
       createdAt: fixture.createdAt.toISOString(),
-      lineUps: fixture.squads
+      lineUps: fixture.lineUps.map((lineUp) => {
+        return new LineUp({
+          name: lineUp.name,
+          level: lineUp.level,
+          players: lineUp.players.map((player) => {
+            return new PlayerForFixture({
+              id: player.id.toString(),
+              sequence: player.sequence
+            })
+          })
+        })
+      })
     })
   }
 
@@ -19,7 +32,18 @@ export class FixtureConverter {
       _id: fixture?.id ? new Types.ObjectId(fixture.id) : null,
       squadId: new Types.ObjectId(fixture.squadId),
       createdAt: fixture?.createdAt ? new Date(fixture.createdAt) : null,
-      squads: fixture?.lineUps
+      lineUps: fixture?.lineUps.map((lineUp) => {
+        return {
+          name: lineUp.name,
+          level: lineUp.level,
+          players: lineUp.players.map((player) => {
+            return {
+              id: new Types.ObjectId(player.id),
+              sequence: player.sequence
+            }
+          })
+        }
+      })
     })
   }
 }

@@ -4,7 +4,7 @@ export const PLAYER_IN_PORT = 'PLAYER_IN_PORT'
 export interface PlayerRestInPort {
   create(player: Player): Promise<Player>
   getOne(id: PlayerId): Promise<Player | null>
-  getBy(squadId: string): Promise<Player[]>
+  getBy(squadId: string, playerIds: PlayerId[]): Promise<Player[]>
   update(player: Player): Promise<void>
   delete(id: PlayerId): Promise<void>
   getPlayerPositions(): Promise<string[]>

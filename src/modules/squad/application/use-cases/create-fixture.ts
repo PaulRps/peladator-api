@@ -1,17 +1,14 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {FixtureCriteria} from '../../domain/fixture-criteria'
-import {PlayerForFixture} from '../../domain/player-for-fixture'
 import {Fixture} from '../../domain/fixture'
+import {FixtureCriteria} from '../../domain/fixture-criteria'
 import {LineUp} from '../../domain/lineup'
-import {
-  FIXTURE_DATABASE_OUT_PORT,
-  FixtureDatabaseOutPort
-} from '../ports/out/fixture-database-out.port'
+import {PlayerForFixture} from '../../domain/player-for-fixture'
+import {FixtureDatabaseOutPort} from '../ports/out/fixture-database-out.port'
 
 @Injectable()
 export class CreateFixture {
   constructor(
-    @Inject(FIXTURE_DATABASE_OUT_PORT)
+    @Inject(FixtureDatabaseOutPort.name)
     private readonly fixtureDatabaseOutPort: FixtureDatabaseOutPort
   ) {}
 

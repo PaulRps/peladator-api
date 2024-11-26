@@ -23,24 +23,31 @@ export class Fixture {
   createdAt: Date
 
   @Prop()
-  squads: LineUp[]
+  lineUps: LineUpPartial[]
 
   constructor({
     _id = null,
     squadId = null,
     createdAt = null,
-    squads
+    lineUps
   }: {
     _id?: Types.ObjectId
     squadId?: Types.ObjectId
     createdAt?: Date
-    squads?: LineUp[]
+    lineUps?: LineUpPartial[]
   } = {}) {
     this._id = _id
     this.squadId = squadId
     this.createdAt = createdAt
-    this.squads = squads
+    this.lineUps = lineUps
   }
 }
 
+export type LineUpPartial = Pick<LineUp, 'name' | 'level'> & {
+  players: PlayerForFixturePartial[]
+}
+export type PlayerForFixturePartial = {
+  id: Types.ObjectId | string
+  sequence: number
+}
 export const FixtureSchema = SchemaFactory.createForClass(Fixture)
