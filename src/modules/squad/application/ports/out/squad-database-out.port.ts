@@ -1,5 +1,5 @@
-import {Fixture} from 'src/modules/squad/domain/fixture'
-import {Squad, SquadId} from 'src/modules/squad/domain/squad'
+import {Fixture} from 'src/modules/squad/domain/models/fixture'
+import {Squad, SquadId} from 'src/modules/squad/domain/models/squad'
 
 export interface SquadDatabaseOutPort {
   getOne(id: SquadId): Promise<Squad | null>

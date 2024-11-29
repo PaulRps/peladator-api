@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {Player} from '../../domain/player'
+import {Player} from '../../domain/models/player'
 import {PlayerDatabaseOutPort} from '../ports/out/player-database-out.port'
-import {SquadExists} from './squad-exists'
+import {SquadExists} from './squad-exists.usecase'
 
 @Injectable()
 export class CreatePlayer {

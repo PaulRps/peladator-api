@@ -1,11 +1,8 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose'
 import {HydratedDocument, Types} from 'mongoose'
-import {LineUp} from 'src/modules/squad/domain/lineup'
+import {LineUp} from 'src/modules/squad/domain/models/lineup'
 
 export type FixtureDocument = HydratedDocument<Fixture>
-
-if (!process.env.FIXTURE_EXPIRE_TIME)
-  throw new Error('FIXTURE_EXPIRE_TIME is not defined')
 
 @Schema({collection: 'fixtures', _id: false})
 export class Fixture {
@@ -17,7 +14,6 @@ export class Fixture {
 
   @Prop({
     type: Date,
-    expires: process.env.FIXTURE_EXPIRE_TIME,
     default: Date.now
   })
   createdAt: Date

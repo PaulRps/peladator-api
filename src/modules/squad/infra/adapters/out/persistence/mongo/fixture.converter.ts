@@ -1,8 +1,8 @@
 import {Injectable} from '@nestjs/common'
 import {Types} from 'mongoose'
-import {Fixture} from 'src/modules/squad/domain/fixture'
-import {LineUp} from 'src/modules/squad/domain/lineup'
-import {PlayerForFixture} from 'src/modules/squad/domain/player-for-fixture'
+import {Fixture} from 'src/modules/squad/domain/models/fixture'
+import {LineUp} from 'src/modules/squad/domain/models/lineup'
+import {PlayerForFixture} from 'src/modules/squad/domain/models/player-for-fixture'
 import * as FixtureDocument from 'src/modules/squad/infra/config/persistence/mongo/fixture.document'
 
 @Injectable()

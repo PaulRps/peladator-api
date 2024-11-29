@@ -6,20 +6,20 @@ import {SquadDatabaseOutPort} from './application/ports/out/squad-database-out.p
 import {FixtureRestService} from './application/services/fixture-rest.service'
 import {PlayerRestService} from './application/services/player-rest.service'
 import {SquadRestService} from './application/services/squad-rest.service'
-import {CreateFixture} from './application/use-cases/create-fixture'
+import {CreateFixture} from './application/use-cases/create-fixture.usecase'
 import {CreatePlayer} from './application/use-cases/create-player.usecase'
 import {CreateSquad} from './application/use-cases/create-squad.usecase'
 import {DeletePlayer} from './application/use-cases/delete-player.usecase'
 import {DeleteSquad} from './application/use-cases/delete-squad.usecase'
 import {FilterPlayers} from './application/use-cases/filter-players.usecase'
-import {GetLatestFixture} from './application/use-cases/get-latest-fixture'
+import {GetLatestFixture} from './application/use-cases/get-latest-fixture.usecase'
 import {GetOnePlayer} from './application/use-cases/get-one-player.usecase'
 import {GetOneSquad} from './application/use-cases/get-one-squad.usecase'
-import {GetPlayerPositions} from './application/use-cases/get-player-positions'
-import {GetPlayersForFixture} from './application/use-cases/get-players-for-fixture'
-import {SavePlayerForFixture} from './application/use-cases/save-player-for-fixture'
-import {SquadExists} from './application/use-cases/squad-exists'
-import {UpdateFixture} from './application/use-cases/update-fixture'
+import {GetPlayerPositions} from './application/use-cases/get-player-positions.usecase'
+import {GetPlayersForFixture} from './application/use-cases/get-players-for-fixture.usecase'
+import {SavePlayerForFixture} from './application/use-cases/save-player-for-fixture.usecase'
+import {SquadExists} from './application/use-cases/squad-exists.usecase'
+import {UpdateFixture} from './application/use-cases/update-fixture.usecase'
 import {UpdatePlayer} from './application/use-cases/update-player.usecase'
 import {UpdateSquad} from './application/use-cases/update-squad.usecase'
 import {FixtureRestInAdapter} from './infra/adapters/in/fixture-rest-in.adapter'
@@ -29,6 +29,8 @@ import {FixtureMongoOutAdapter} from './infra/adapters/out/persistence/mongo/fix
 import {PlayerMongoOutAdapter} from './infra/adapters/out/persistence/mongo/player-mongo-out.adapter'
 import {SquadMongoOutAdapter} from './infra/adapters/out/persistence/mongo/squad-mongo-out.adapter'
 import {PersistenceModule} from './infra/adapters/out/persistence/persistence.module'
+import {DeleteFixture} from './application/use-cases/delete-fixture.usecase'
+import {GetPlayersFixtureHistory} from './application/use-cases/get-players-fixture-history.usecase'
 
 @Module({
   controllers: [SquadRestInAdapter, PlayerRestInAdapter, FixtureRestInAdapter],
@@ -52,6 +54,8 @@ import {PersistenceModule} from './infra/adapters/out/persistence/persistence.mo
     SavePlayerForFixture,
     GetPlayersForFixture,
     UpdateFixture,
+    DeleteFixture,
+    GetPlayersFixtureHistory,
     {
       provide: SquadDatabaseOutPort.name,
       useClass: SquadMongoOutAdapter

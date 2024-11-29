@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common'
 import {SquadRestInPort} from 'src/modules/squad/application/ports/in/squad-rest-in.port'
 import {SquadRestService} from 'src/modules/squad/application/services/squad-rest.service'
-import {Squad} from 'src/modules/squad/domain/squad'
+import {Squad} from 'src/modules/squad/domain/models/squad'
 
 @Controller('v1/squad')
 export class SquadRestInAdapter implements SquadRestInPort {

@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common'
-import {PlayerPosition} from '../../domain/player-position'
+import {PlayerPosition} from '../../domain/models/player-position'
 
 @Injectable()
 export class GetPlayerPositions {

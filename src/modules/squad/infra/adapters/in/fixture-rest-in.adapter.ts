@@ -1,9 +1,9 @@
 import {Body, Controller, Get, HttpCode, Post, Put, Query} from '@nestjs/common'
 import {FixtureRestInPort} from 'src/modules/squad/application/ports/in/fixture-rest-in.port'
 import {FixtureRestService} from 'src/modules/squad/application/services/fixture-rest.service'
-import {Fixture} from 'src/modules/squad/domain/fixture'
-import {FixtureCriteria} from 'src/modules/squad/domain/fixture-criteria'
-import {SquadId} from 'src/modules/squad/domain/squad'
+import {Fixture} from 'src/modules/squad/domain/models/fixture'
+import {FixtureCriteria} from 'src/modules/squad/domain/models/fixture-criteria'
+import {SquadId} from 'src/modules/squad/domain/models/squad'
 
 @Controller('v1/fixture')
 export class FixtureRestInAdapter implements FixtureRestInPort {

@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common'
 import {PlayerDatabaseOutPort} from 'src/modules/squad/application/ports/out/player-database-out.port'
-import {PlayerId, Player} from 'src/modules/squad/domain/player'
+import {PlayerId, Player} from 'src/modules/squad/domain/models/player'
 import {PlayerRepository} from 'src/modules/squad/infra/adapters/out/persistence/mongo/player.repository'
 import {PlayerConverter} from './player.converter'
 

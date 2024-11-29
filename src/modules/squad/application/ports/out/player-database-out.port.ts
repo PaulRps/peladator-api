@@ -1,4 +1,4 @@
-import {Player, PlayerId} from 'src/modules/squad/domain/player'
+import {Player, PlayerId} from 'src/modules/squad/domain/models/player'
 
 export interface PlayerDatabaseOutPort {
   getOne(id: PlayerId): Promise<Player | null>

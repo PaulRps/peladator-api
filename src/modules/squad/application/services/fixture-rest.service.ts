@@ -1,9 +1,9 @@
 import {Injectable} from '@nestjs/common'
-import {Fixture} from '../../domain/fixture'
-import {FixtureCriteria} from '../../domain/fixture-criteria'
-import {CreateFixture} from '../use-cases/create-fixture'
-import {GetLatestFixture as GetLatestFixture} from '../use-cases/get-latest-fixture'
-import {UpdateFixture} from '../use-cases/update-fixture'
+import {Fixture} from '../../domain/models/fixture'
+import {FixtureCriteria} from '../../domain/models/fixture-criteria'
+import {CreateFixture} from '../use-cases/create-fixture.usecase'
+import {GetLatestFixture as GetLatestFixture} from '../use-cases/get-latest-fixture.usecase'
+import {UpdateFixture} from '../use-cases/update-fixture.usecase'
 
 @Injectable()
 export class FixtureRestService {

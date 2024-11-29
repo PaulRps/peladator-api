@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {PlayerId} from '../../domain/player'
+import {PlayerId} from '../../domain/models/player'
 import {PlayerDatabaseOutPort} from '../ports/out/player-database-out.port'
 
 @Injectable()

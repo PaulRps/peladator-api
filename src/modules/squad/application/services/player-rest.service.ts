@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common'
-import {Player, PlayerId} from '../../domain/player'
+import {Player, PlayerId} from '../../domain/models/player'
 import {CreatePlayer} from '../use-cases/create-player.usecase'
 import {DeletePlayer} from '../use-cases/delete-player.usecase'
 import {
@@ -8,9 +8,11 @@ import {
 } from '../use-cases/filter-players.usecase'
 import {GetOnePlayer} from '../use-cases/get-one-player.usecase'
 import {UpdatePlayer} from '../use-cases/update-player.usecase'
-import {GetPlayerPositions} from '../use-cases/get-player-positions'
-import {GetPlayersForFixture} from '../use-cases/get-players-for-fixture'
-import {SavePlayerForFixture} from '../use-cases/save-player-for-fixture'
+import {GetPlayerPositions} from '../use-cases/get-player-positions.usecase'
+import {GetPlayersForFixture} from '../use-cases/get-players-for-fixture.usecase'
+import {SavePlayerForFixture} from '../use-cases/save-player-for-fixture.usecase'
+import {PlayerFixtureHistory} from '../../domain/models/player-fixture-history'
+import {GetPlayersFixtureHistory} from '../use-cases/get-players-fixture-history.usecase'
 
 @Injectable()
 export class PlayerRestService {
@@ -22,7 +24,8 @@ export class PlayerRestService {
     private readonly filterPlayers: FilterPlayers,
     private readonly getPlayerPosition: GetPlayerPositions,
     private readonly savePlayerForFixtur: SavePlayerForFixture,
-    private readonly getPlayersForFixtur: GetPlayersForFixture
+    private readonly getPlayersForFixtur: GetPlayersForFixture,
+    private readonly getPlayersFixtureHistory: GetPlayersFixtureHistory
   ) {}
 
   create(player: Player): Promise<Player> {
@@ -45,6 +48,13 @@ export class PlayerRestService {
     return this.filterPlayers.execute(
       new FilterPlayersForFixture({squadId, ids})
     )
+  }
+
+  getFixtureHistory(
+    playerIds: string[],
+    squadId: string
+  ): Promise<PlayerFixtureHistory[]> {
+    return this.getPlayersFixtureHistory.execute(playerIds, squadId)
   }
 
   getPlayerPositions(): Promise<string[]> {

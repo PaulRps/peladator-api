@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common'
 import {Types} from 'mongoose'
-import {Player} from 'src/modules/squad/domain/player'
+import {Player} from 'src/modules/squad/domain/models/player'
 import * as playerDocument from 'src/modules/squad/infra/config/persistence/mongo/player.document'
 import * as playerForFixtureDocument from 'src/modules/squad/infra/config/persistence/mongo/player-for-fixture.document'
 

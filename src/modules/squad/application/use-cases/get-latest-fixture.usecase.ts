@@ -1,8 +1,8 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {Fixture} from '../../domain/fixture'
+import {Fixture} from '../../domain/models/fixture'
 import {FixtureDatabaseOutPort} from '../ports/out/fixture-database-out.port'
 import {FilterPlayers, FilterPlayersForFixture} from './filter-players.usecase'
-import {PlayerForFixture} from '../../domain/player-for-fixture'
+import {PlayerForFixture} from '../../domain/models/player-for-fixture'
 
 @Injectable()
 export class GetLatestFixture {

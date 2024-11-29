@@ -1,18 +1,35 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {Fixture} from '../../domain/fixture'
-import {FixtureCriteria} from '../../domain/fixture-criteria'
-import {LineUp} from '../../domain/lineup'
-import {PlayerForFixture} from '../../domain/player-for-fixture'
+import {Fixture} from '../../domain/models/fixture'
+import {FixtureCriteria} from '../../domain/models/fixture-criteria'
+import {LineUp} from '../../domain/models/lineup'
+import {PlayerForFixture} from '../../domain/models/player-for-fixture'
 import {FixtureDatabaseOutPort} from '../ports/out/fixture-database-out.port'
+import {GetLatestFixture} from './get-latest-fixture.usecase'
+import {DeleteFixture} from './delete-fixture.usecase'
 
 @Injectable()
 export class CreateFixture {
   constructor(
     @Inject(FixtureDatabaseOutPort.name)
-    private readonly fixtureDatabaseOutPort: FixtureDatabaseOutPort
+    private readonly fixtureDatabaseOutPort: FixtureDatabaseOutPort,
+    private readonly getLatestFixture: GetLatestFixture,
+    private readonly deleteFixture: DeleteFixture
   ) {}
 
-  execute(criteria: FixtureCriteria): Promise<Fixture> {
+  async execute(criteria: FixtureCriteria): Promise<Fixture> {
+    const latestFixture = await this.getLatestFixture.execute(criteria.squadId)
+    const fixtureDay = new Date(latestFixture?.createdAt)
+      .toISOString()
+      .split('T')[0]
+      .split('-')[2]
+
+    if (
+      latestFixture &&
+      fixtureDay === new Date().toISOString().split('T')[0].split('-')[2]
+    ) {
+      await this.deleteFixture.execute(latestFixture.id)
+    }
+
     this.setRandomSequence(criteria.players)
 
     const lineUpSquad = this.createBySequence(criteria)

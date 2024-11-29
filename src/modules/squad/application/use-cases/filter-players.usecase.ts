@@ -1,5 +1,5 @@
 import {Inject, Injectable, Logger} from '@nestjs/common'
-import {Player} from '../../domain/player'
+import {Player} from '../../domain/models/player'
 import {PlayerDatabaseOutPort} from '../ports/out/player-database-out.port'
 
 @Injectable()

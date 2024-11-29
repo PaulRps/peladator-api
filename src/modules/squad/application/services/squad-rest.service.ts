@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common'
-import {Squad, SquadId} from '../../domain/squad'
+import {Squad, SquadId} from '../../domain/models/squad'
 import {CreateSquad} from '../use-cases/create-squad.usecase'
 import {DeleteSquad} from '../use-cases/delete-squad.usecase'
 import {GetOneSquad} from '../use-cases/get-one-squad.usecase'

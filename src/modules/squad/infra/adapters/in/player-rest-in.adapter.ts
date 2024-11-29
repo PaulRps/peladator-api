@@ -11,7 +11,8 @@ import {
 } from '@nestjs/common'
 import {PlayerRestInPort} from 'src/modules/squad/application/ports/in/player-rest-in.port'
 import {PlayerRestService} from 'src/modules/squad/application/services/player-rest.service'
-import {Player, PlayerId} from 'src/modules/squad/domain/player'
+import {Player, PlayerId} from 'src/modules/squad/domain/models/player'
+import {PlayerFixtureHistory} from 'src/modules/squad/domain/models/player-fixture-history'
 
 @Controller('v1/player')
 export class PlayerRestInAdapter implements PlayerRestInPort {
@@ -36,6 +37,14 @@ export class PlayerRestInAdapter implements PlayerRestInPort {
     @Query('playerIds') playerIds: PlayerId[]
   ): Promise<Player[]> {
     return this.playerService.getBy(squadId, playerIds)
+  }
+  @HttpCode(200)
+  @Get('fixture-history')
+  getFixtureHistory(
+    @Query('playerIds') playerIds: PlayerId[],
+    @Query('squadId') squadId: string
+  ): Promise<PlayerFixtureHistory[]> {
+    return this.playerService.getFixtureHistory(playerIds, squadId)
   }
 
   @HttpCode(200)

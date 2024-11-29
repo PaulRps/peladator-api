@@ -1,6 +1,6 @@
-import {Fixture} from 'src/modules/squad/domain/fixture'
-import {FixtureCriteria} from 'src/modules/squad/domain/fixture-criteria'
-import {SquadId} from 'src/modules/squad/domain/squad'
+import {Fixture} from 'src/modules/squad/domain/models/fixture'
+import {FixtureCriteria} from 'src/modules/squad/domain/models/fixture-criteria'
+import {SquadId} from 'src/modules/squad/domain/models/squad'
 
 export interface FixtureRestInPort {
   createFixture(fixture: FixtureCriteria): Promise<Fixture>

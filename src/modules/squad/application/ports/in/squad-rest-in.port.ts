@@ -1,4 +1,4 @@
-import {Squad, SquadId} from 'src/modules/squad/domain/squad'
+import {Squad, SquadId} from 'src/modules/squad/domain/models/squad'
 
 export interface SquadRestInPort {
   getOne(id: string): Promise<Squad | null>

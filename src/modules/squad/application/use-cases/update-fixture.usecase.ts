@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@nestjs/common'
-import {Fixture} from '../../domain/fixture'
+import {Fixture} from '../../domain/models/fixture'
 import {FixtureDatabaseOutPort} from '../ports/out/fixture-database-out.port'
 
 @Injectable()

@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common'
 import { Types } from 'mongoose'
-import {Player} from 'src/modules/squad/domain/player'
-import {Squad} from 'src/modules/squad/domain/squad'
+import {Player} from 'src/modules/squad/domain/models/player'
+import {Squad} from 'src/modules/squad/domain/models/squad'
 import * as squadDocument from 'src/modules/squad/infra/config/persistence/mongo/squad.document'
 
 @Injectable()
