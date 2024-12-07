@@ -17,20 +17,9 @@ export class CreateFixture {
   ) {}
 
   async execute(criteria: FixtureCriteria): Promise<Fixture> {
-    const latestFixture = await this.getLatestFixture.execute(criteria.squadId)
-    const fixtureDay = new Date(latestFixture?.createdAt)
-      .toISOString()
-      .split('T')[0]
-      .split('-')[2]
+    await this.deleteLastFixture(criteria)
 
-    if (
-      latestFixture &&
-      fixtureDay === new Date().toISOString().split('T')[0].split('-')[2]
-    ) {
-      await this.deleteFixture.execute(latestFixture.id)
-    }
-
-    this.setRandomSequence(criteria.players)
+    this.setRandomSequence(criteria.players, criteria.priorityPlayers)
 
     const lineUpSquad = this.createBySequence(criteria)
 
@@ -48,6 +37,22 @@ export class CreateFixture {
         createdAt: new Date().toISOString()
       })
     )
+  }
+
+  private async deleteLastFixture(criteria: FixtureCriteria) {
+    const latestFixture = await this.getLatestFixture.execute(criteria.squadId)
+    const fixtureDay = new Date(latestFixture?.createdAt)
+      .toISOString()
+      .split('T')[0]
+      .split('-')[2]
+
+    const hasPreviousFixtureOnSameDay =
+      latestFixture &&
+      fixtureDay === new Date().toISOString().split('T')[0].split('-')[2]
+
+    if (hasPreviousFixtureOnSameDay) {
+      await this.deleteFixture.execute(latestFixture.id)
+    }
   }
 
   private balanceTwoLineUpsByLevel(
@@ -141,7 +146,10 @@ export class CreateFixture {
     return lineUpSquad
   }
 
-  private setRandomSequence(players: PlayerForFixture[]) {
+  private setRandomSequence(
+    players: PlayerForFixture[],
+    priotityPlayers?: PlayerForFixture[]
+  ) {
     for (var i = players.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * i)
       var temp = players[i]
@@ -149,11 +157,13 @@ export class CreateFixture {
       players[j] = temp
     }
 
+    if (priotityPlayers?.length > 0) {
+      players.unshift(...priotityPlayers)
+    }
+
     players.forEach((player, index) => {
       player.sequence = index + 1
     })
-
-    return players
   }
 
   private createLineUp(name: string, players: PlayerForFixture[]): LineUp {

@@ -1,7 +1,6 @@
 import {Player, PlayerId} from 'src/modules/squad/domain/models/player'
 import {PlayerFixtureHistory} from 'src/modules/squad/domain/models/player-fixture-history'
 
-export const PLAYER_IN_PORT = 'PLAYER_IN_PORT'
 export interface PlayerRestInPort {
   create(player: Player): Promise<Player>
   getOne(id: PlayerId): Promise<Player | null>
