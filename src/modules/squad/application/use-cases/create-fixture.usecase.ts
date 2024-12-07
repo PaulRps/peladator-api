@@ -41,14 +41,17 @@ export class CreateFixture {
 
   private async deleteLastFixture(criteria: FixtureCriteria) {
     const latestFixture = await this.getLatestFixture.execute(criteria.squadId)
-    const fixtureDay = new Date(latestFixture?.createdAt)
-      .toISOString()
-      .split('T')[0]
-      .split('-')[2]
+    if (!latestFixture) {
+      return
+    }
 
-    const hasPreviousFixtureOnSameDay =
-      latestFixture &&
-      fixtureDay === new Date().toISOString().split('T')[0].split('-')[2]
+    const fixtureDate = new Date(latestFixture.createdAt)
+    const lastFixtureDay = `${fixtureDate.getMonth() + 1}-${fixtureDate.toISOString().split('T')[0].split('-')[2]}`
+
+    const todayDate = new Date()
+    const today = `${todayDate.getMonth() + 1}-${todayDate.toISOString().split('T')[0].split('-')[2]}`
+
+    const hasPreviousFixtureOnSameDay = lastFixtureDay === today
 
     if (hasPreviousFixtureOnSameDay) {
       await this.deleteFixture.execute(latestFixture.id)
