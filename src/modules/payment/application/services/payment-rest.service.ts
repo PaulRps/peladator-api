@@ -22,8 +22,12 @@ export class PaymentRestService {
     return this.updatePayment.execute(payment)
   }
 
-  getPaymentByDate(month: number, squadId: string): Promise<Payment | null> {
-    return this.getPaymentByDateAndSquadId.execute(month, squadId)
+  getPaymentBy(
+    month: number,
+    squadId: string,
+    id: string
+  ): Promise<Payment | null> {
+    return this.getPaymentByDateAndSquadId.execute(month, squadId, id)
   }
 
   getAll(squadId: string): Promise<Payment[]> {

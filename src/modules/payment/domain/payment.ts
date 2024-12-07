@@ -2,6 +2,7 @@ export class Payment {
   id: string
   squadId: string
   month: number
+  year: number
   monthlyFee: number
   dailyFee: number
   customersMonthlyPaid: string[]
@@ -11,22 +12,16 @@ export class Payment {
     id,
     squadId,
     month,
+    year,
     monthlyFee,
     dailyFee,
     customersMonthlyPaid,
     customersDailyPaid
-  }: {
-    id: string
-    squadId: string
-    month: number
-    monthlyFee: number
-    dailyFee: number
-    customersMonthlyPaid: string[]
-    customersDailyPaid: {}
-  }) {
+  }: Partial<Payment> = {}) {
     this.id = id
     this.squadId = squadId
     this.month = month
+    this.year = year
     this.monthlyFee = monthlyFee
     this.dailyFee = dailyFee
     this.customersMonthlyPaid = customersMonthlyPaid

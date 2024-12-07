@@ -15,11 +15,12 @@ export class PaymentRestInAdapter implements PaymentRestInPort {
 
   @Get()
   @HttpCode(200)
-  getByMonth(
+  getBy(
     @Query('month') month: number,
-    @Query('squadId') squadId: string
+    @Query('squadId') squadId: string,
+    @Query('id') id: string
   ): Promise<Payment | null> {
-    return this.paymentService.getPaymentByDate(month, squadId)
+    return this.paymentService.getPaymentBy(month, squadId, id)
   }
 
   @Get('all')

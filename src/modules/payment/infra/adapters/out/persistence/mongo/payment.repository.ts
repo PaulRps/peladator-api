@@ -21,11 +21,18 @@ export class PaymentRepository {
       .then((payment) => payment._id.toString())
   }
 
-  getByMonth(month: number, squadId: string): Promise<Payment | null> {
-    return this.paymentModel.findOne({
-      month: month,
-      squadId: new Types.ObjectId(squadId)
-    })
+  getBy(month: number, squadId: string, id: string): Promise<Payment | null> {
+    const query: any = {}
+    if (id) {
+      query._id = new Types.ObjectId(id)
+    }
+    if (squadId) {
+      query.squadId = new Types.ObjectId(squadId)
+    }
+    if (month) {
+      query.month = month
+    }
+    return this.paymentModel.findOne(query).exec()
   }
 
   getAll(squadId: string): Promise<Payment[]> {

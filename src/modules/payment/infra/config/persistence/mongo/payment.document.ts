@@ -31,26 +31,23 @@ export class Payment {
   @Prop()
   month: number
 
+  @Prop()
+  year: number
+
   constructor({
-    id = null,
+    _id,
     squadId,
     month,
+    year,
     monthlyFee,
     dailyFee,
     customersMonthlyPaid = [],
     customersDailyPaid = []
-  }: {
-    id?: Types.ObjectId
-    squadId: Types.ObjectId
-    month: number
-    monthlyFee: number
-    dailyFee: number
-    customersMonthlyPaid?: string[]
-    customersDailyPaid?: {}
-  }) {
-    this._id = id
+  }: Partial<Payment> = {}) {
+    this._id = _id
     this.squadId = squadId
     this.month = month
+    this.year = year
     this.monthlyFee = monthlyFee
     this.dailyFee = dailyFee
     this.customersMonthlyPaid = customersMonthlyPaid

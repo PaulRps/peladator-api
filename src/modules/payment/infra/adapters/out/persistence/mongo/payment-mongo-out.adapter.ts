@@ -17,8 +17,8 @@ export class PaymentMongoOutAdapter implements PaymentDatabaseOutPort {
     )
   }
 
-  getByMonth(month: number, squadId: string): Promise<Payment | null> {
-    return this.paymentRepository.getByMonth(month, squadId).then((payment) => {
+  getBy(month: number, squadId: string, id: string): Promise<Payment | null> {
+    return this.paymentRepository.getBy(month, squadId, id).then((payment) => {
       return payment ? this.paymentConverter.toPayment(payment) : null
     })
   }

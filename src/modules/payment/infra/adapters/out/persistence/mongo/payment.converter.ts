@@ -7,9 +7,10 @@ import * as PaymentDocument from 'src/modules/payment/infra/config/persistence/m
 export class PaymentConverter {
   toPaymentDocument(from: Payment): PaymentDocument.Payment {
     return new PaymentDocument.Payment({
-      id: from?.id ? new Types.ObjectId(from?.id) : null,
+      _id: from?.id ? new Types.ObjectId(from?.id) : null,
       squadId: new Types.ObjectId(from.squadId),
       month: from.month,
+      year: from.year,
       monthlyFee: from.monthlyFee,
       dailyFee: from.dailyFee,
       customersMonthlyPaid: from?.customersMonthlyPaid,
@@ -25,7 +26,8 @@ export class PaymentConverter {
       dailyFee: from.dailyFee,
       customersMonthlyPaid: from.customersMonthlyPaid,
       customersDailyPaid: from.customersDailyPaid,
-      month: from.month
+      month: from.month,
+      year: from.year
     })
   }
 }

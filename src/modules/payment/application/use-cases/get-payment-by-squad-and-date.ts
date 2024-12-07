@@ -9,7 +9,7 @@ export class GetPaymentBySquadAndMonth {
     private readonly paymentDatabaseOutPort: PaymentDatabaseOutPort
   ) {}
 
-  execute(month: number, squadId: string): Promise<Payment | null> {
-    return this.paymentDatabaseOutPort.getByMonth(month, squadId)
+  execute(month: number, squadId: string, id: string): Promise<Payment | null> {
+    return this.paymentDatabaseOutPort.getBy(month, squadId, id)
   }
 }
