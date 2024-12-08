@@ -63,8 +63,14 @@ export class GetPlayersFixtureHistory {
       })
     })
 
+    const playersIdWithHistory = Object.keys(historyMap)
+    const allPlyaers: PlayerFixtureHistory[] = Object.values(playersMap)
+    const playerWithNoHistory = allPlyaers.filter(
+      (p) => !playersIdWithHistory.includes(p.id)
+    )
     const history: PlayerFixtureHistory[] = Object.values(historyMap)
-    return history?.length > 0 ? history : Object.values(playersMap)
+
+    return [...history, ...playerWithNoHistory]
   }
 
   private addHistory(
